@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรไฟล์ | Samut Prakan Travel</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            background: white;
+            padding: var(--spacing-4);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-orange);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-2);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        /* Vertical List Card */
+        .list-card {
+            display: flex;
+            background: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .list-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .list-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .list-body {
+            padding: var(--spacing-2) var(--spacing-3);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .remove-btn {
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-1);
+        }
+
+        .remove-btn:hover {
+            color: #EF4444;
+        }
+    </style>
+</head>
+
+<body class="user-layout">
+
+    <!-- Top Navbar -->
+    <nav class="top-nav">
+        <h1 class="h3" style="margin:0;" data-i18n="profile_title">โปรไฟล์ของฉัน</h1>
+        <div class="nav-actions flex items-center gap-3">
+            <div class="lang-switch" style="margin:0;">
+                <button class="lang-btn active" data-lang="th">TH</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+            <!-- Settings Icon -->
+            <button class="btn btn-outline" style="border-radius:50%; padding:8px; display:flex; border:none;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="app-container" style="padding: var(--spacing-4);">
+
+        <!-- Not Logged In State -->
+        <div id="profileNotLoggedIn" style="display:none;">
+            <div style="text-align:center; padding: 60px 20px;">
+                <div style="width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg, #FFF7ED, #FFEDD5); margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:2rem;">
+                    🔒
+                </div>
+                <h2 class="h2 mb-2">กรุณาเข้าสู่ระบบ</h2>
+                <p class="text-muted mb-4" style="max-width:360px; margin:0 auto 24px;">เข้าสู่ระบบเพื่อดูโปรไฟล์ของคุณ รีวิวสถานที่ และบันทึกรายการโปรด</p>
+                <div class="flex gap-2" style="justify-content:center;">
+                    <a href="login.html" class="btn btn-outline" style="padding: 10px 28px; border-radius: var(--radius-full);">เข้าสู่ระบบ</a>
+                    <a href="login.html#register" class="btn btn-primary" style="padding: 10px 28px; border-radius: var(--radius-full); box-shadow: 0 2px 8px rgba(249,115,22,0.3);">สมัครสมาชิก</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logged In State -->
+        <div id="profileLoggedIn" style="display:none;">
+            <!-- Profile Header -->
+            <div class="profile-header flex-col" style="align-items:flex-start;">
+                <div class="flex items-center gap-3 w-100" style="width:100%;">
+                    <div class="profile-avatar" id="displayAvatar">?</div>
+                    <div style="flex:1;">
+                        <h2 class="h2 mb-1" id="displayName">-</h2>
+                        <p class="text-muted text-small" id="displayTags"></p>
+                    </div>
+                    <button class="btn btn-outline" style="border-radius: var(--radius-full);" data-i18n="profile_edit"
+                        onclick="openEditProfile()">แก้ไขโปรไฟล์</button>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <h3 class="h3" style="color:var(--primary-orange);" id="statReviews">0</h3>
+                        <div class="text-small text-muted" data-i18n="profile_reviewed">รีวิวแล้ว</div>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="h3" style="color:var(--primary-orange);" id="statBookmarks">0</h3>
+                        <div class="text-small text-muted" data-i18n="profile_saved">บันทึกไว้</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookmarked List -->
+            <section>
+                <h2 class="h3 mb-3" data-i18n="profile_bookmarks">รายการโปรดที่บันทึกไว้ (Bookmarks)</h2>
+
+                <div class="flex-col" id="profileBookmarksList">
+                    <!-- Rendered by JS -->
+                </div>
+
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="bottom-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                </path>
+            </svg>
+            <span data-i18n="nav_home">หน้าแรก</span>
+        </a>
+        <a href="search.html" class="bottom-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span data-i18n="nav_search">ค้นหา</span>
+        </a>
+        <a href="stats.html" class="bottom-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 8v8m-4-5v5m-4-2v2m-2 4h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2z">
+                </path>
+            </svg>
+            <span data-i18n="nav_stats">สถิติ</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item active">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg>
+            <span data-i18n="nav_profile">โปรไฟล์</span>
+        </a>
+    </nav>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editProfileModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="modal-box"
+            style="background: white; border-radius: var(--radius-lg); width: 90%; max-width: 400px; padding: var(--spacing-4);">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="h3" data-i18n="profile_edit">แก้ไขโปรไฟล์</h2>
+                <button class="btn text-muted"
+                    style="padding:4px; border:none; background:none; font-size:1.2rem; cursor:pointer;"
+                    onclick="closeEditProfile()">✕</button>
+            </div>
+            <form id="editProfileForm">
+                <div class="input-group">
+                    <label class="input-label" data-i18n="auth_name">ชื่อ - นามสกุล</label>
+                    <input type="text" class="input-field" id="editNameInput" required>
+                </div>
+                <div class="input-group">
+                    <label class="input-label" data-i18n="auth_interest">เลือกสิ่งที่คุณสนใจ (เพื่อแนะนำสถานที่)</label>
+                    <input type="text" class="input-field" id="editTagsInput" placeholder="เช่น: ธรรมชาติ, คาเฟ่"
+                        required>
+                </div>
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" class="btn btn-outline" onclick="closeEditProfile()">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Check if user is logged in
+        (function() {
+            const token = localStorage.getItem('accessToken');
+            const userStr = localStorage.getItem('user');
+
+            if (!token || !userStr) {
+                // Not logged in — show login prompt
+                document.getElementById('profileNotLoggedIn').style.display = '';
+                document.getElementById('profileLoggedIn').style.display = 'none';
+            } else {
+                // Logged in — show profile with real data
+                document.getElementById('profileNotLoggedIn').style.display = 'none';
+                document.getElementById('profileLoggedIn').style.display = '';
+
+                try {
+                    const user = JSON.parse(userStr);
+                    const name = user.name || user.displayName || 'ผู้ใช้งาน';
+                    document.getElementById('displayName').textContent = name;
+                    document.getElementById('displayAvatar').textContent = name.charAt(0);
+                } catch(e) {
+                    document.getElementById('displayName').textContent = 'ผู้ใช้งาน';
+                    document.getElementById('displayAvatar').textContent = '?';
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

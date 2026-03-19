@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Samut Prakan Travel</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .stat-card {
+            background: white;
+            padding: var(--spacing-3);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        .stat-icon {
+            width: 48px; height: 48px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .chart-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: var(--spacing-3);
+        }
+        .chart-container { height: 260px; position: relative; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-3); }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-3); }
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        .rating-table { width: 100%; border-collapse: collapse; }
+        .rating-table th { text-align: left; padding: 8px 12px; font-size: 0.8rem; color: var(--text-muted); border-bottom: 2px solid var(--border-color); }
+        .rating-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+        .rating-table tr:hover { background: #FFF7ED; }
+        .stars { color: #F59E0B; }
+        .badge-status {
+            display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;
+        }
+        .badge-pending { background: #FEF3C7; color: #D97706; }
+        .badge-approved { background: #DCFCE7; color: #16A34A; }
+        .badge-rejected { background: #FEE2E2; color: #DC2626; }
+        .review-item {
+            display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color);
+        }
+        .review-item:last-child { border-bottom: none; }
+        .review-avatar {
+            width: 36px; height: 36px; border-radius: 50%; background: var(--primary-orange);
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 0.8rem; flex-shrink: 0;
+        }
+        .loading-text { text-align: center; padding: 40px; color: var(--text-muted); }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="nav-logo" style="justify-content:center;">
+                    <span style="color:var(--primary-orange);">Admin</span>Panel
+                </a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dash.html" class="sidebar-link active">
+                    <svg fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                    <span data-i18n="admin_nav_dash">ภาพรวม (Dashboard)</span>
+                </a>
+                <a href="admin-users.html" class="sidebar-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <span data-i18n="admin_nav_users">จัดการผู้ใช้งาน</span>
+                </a>
+                <a href="admin-places.html" class="sidebar-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    <span data-i18n="admin_nav_places">จัดการสถานที่</span>
+                </a>
+                <a href="admin-reviews.html" class="sidebar-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                    <span data-i18n="admin_nav_reviews">ตรวจสอบรีวิว</span>
+                </a>
+            </nav>
+            <div style="padding:var(--spacing-3);">
+                <div class="lang-switch mb-3" style="justify-content:center;">
+                    <button class="lang-btn active" data-lang="th">TH</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
+                <a href="login.html" class="btn btn-outline btn-full text-small" data-i18n="admin_logout">ออกจากระบบ</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="h2" data-i18n="admin_dash_title">📊 ภาพรวม Dashboard</h1>
+                <span class="text-small text-muted" id="lastUpdated"></span>
+            </div>
+
+            <div id="dashContent">
+                <p class="loading-text">⏳ กำลังโหลดข้อมูล...</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+    (async function() {
+        const container = document.getElementById('dashContent');
+        try {
+            const res = await fetch('/api/stats/dashboard');
+            const data = await res.json();
+            const s = data.summary;
+
+            // Last updated
+            document.getElementById('lastUpdated').textContent = 'อัปเดตล่าสุด: ' + new Date().toLocaleString('th-TH');
+
+            // Build dashboard HTML
+            container.innerHTML = `
+                <!-- Summary Cards -->
+                <div class="grid-4 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:#E0F2FE; color:#0284C7;">👥</div>
+                        <div>
+                            <div class="text-small text-muted">ผู้ใช้งานทั้งหมด</div>
+                            <div class="h3" style="font-family: var(--font-heading);">${s.totalUsers}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:#FEF3C7; color:#D97706;">📍</div>
+                        <div>
+                            <div class="text-small text-muted">สถานที่ในระบบ</div>
+                            <div class="h3" style="font-family: var(--font-heading);">${s.totalPlaces}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:#DCFCE7; color:#16A34A;">⭐</div>
+                        <div>
+                            <div class="text-small text-muted">รีวิวทั้งหมด</div>
+                            <div class="h3" style="font-family: var(--font-heading);">${s.totalReviews}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:#FCE7F3; color:#DB2777;">❤️</div>
+                        <div>
+                            <div class="text-small text-muted">Bookmark ทั้งหมด</div>
+                            <div class="h3" style="font-family: var(--font-heading);">${s.totalBookmarks}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid-2 mb-4">
+                    <div class="chart-card">
+                        <h3 class="h3 mb-2">📊 สถานที่แบ่งตามหมวดหมู่</h3>
+                        <div class="chart-container"><canvas id="categoryChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="h3 mb-2">⭐ การกระจายคะแนนรีวิว</h3>
+                        <div class="chart-container"><canvas id="ratingChart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Place Ratings Table -->
+                <div class="chart-card mb-4">
+                    <h3 class="h3 mb-3">🏆 คะแนนรีวิวเฉลี่ยแต่ละสถานที่</h3>
+                    <div style="overflow-x:auto;">
+                        <table class="rating-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>สถานที่</th>
+                                    <th>หมวดหมู่</th>
+                                    <th>คะแนนเฉลี่ย</th>
+                                    <th>จำนวนรีวิว</th>
+                                    <th>ยอดเข้าชม</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.placeRatings.length > 0 ? data.placeRatings.map((p, i) => `
+                                <tr>
+                                    <td style="font-weight:600; color:var(--primary-orange);">${i + 1}</td>
+                                    <td style="font-weight:500;">${p.name}</td>
+                                    <td>${getCategoryEmoji(p.category)} ${p.category}</td>
+                                    <td><span class="stars">${'★'.repeat(Math.round(p.avgRating))}${'☆'.repeat(5 - Math.round(p.avgRating))}</span> <strong>${p.avgRating}</strong></td>
+                                    <td>${p.reviewCount} รีวิว</td>
+                                    <td>${p.viewCount.toLocaleString()} ครั้ง</td>
+                                </tr>`).join('') : '<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">ยังไม่มีรีวิว</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bottom Row: Top Viewed + Recent Reviews -->
+                <div class="grid-2 mb-4">
+                    <div class="chart-card">
+                        <h3 class="h3 mb-3">👀 สถานที่ยอดเข้าชมสูงสุด</h3>
+                        <div class="chart-container"><canvas id="viewsChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="h3 mb-2">💬 รีวิวล่าสุด</h3>
+                        ${data.recentReviews.length > 0 ? data.recentReviews.map(r => `
+                        <div class="review-item">
+                            <div class="review-avatar">${r.userName.charAt(0)}</div>
+                            <div style="flex:1; min-width:0;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                                    <strong style="font-size:0.85rem;">${r.userName}</strong>
+                                    <span class="badge-status badge-${r.status}">${r.status === 'approved' ? '✓ อนุมัติ' : r.status === 'pending' ? '⏳ รออนุมัติ' : '✕ ปฏิเสธ'}</span>
+                                </div>
+                                <div class="text-small text-muted" style="margin:2px 0;">
+                                    <span class="stars">${'★'.repeat(r.rating)}</span> — ${r.placeName}
+                                </div>
+                                ${r.comment ? `<div class="text-small" style="color:#4B5563; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">"${r.comment}"</div>` : ''}
+                            </div>
+                        </div>`).join('') : '<p class="text-small text-muted" style="text-align:center; padding:20px;">ยังไม่มีรีวิว</p>'}
+                    </div>
+                </div>
+            `;
+
+            // --- Charts ---
+            // Category Doughnut
+            const catColors = ['#F97316', '#0EA5E9', '#8B5CF6', '#10B981', '#EC4899', '#F59E0B', '#6366F1', '#14B8A6'];
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: data.placesByCategory.map(c => c.categoryName),
+                    datasets: [{
+                        data: data.placesByCategory.map(c => c.count),
+                        backgroundColor: catColors.slice(0, data.placesByCategory.length),
+                        borderWidth: 2, borderColor: '#fff',
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right', labels: { font: { family: 'Prompt', size: 12 } } } },
+                }
+            });
+
+            // Rating Distribution Bar
+            const fullDist = [1,2,3,4,5].map(r => {
+                const found = data.ratingDistribution.find(d => d.rating === r);
+                return found ? found.count : 0;
+            });
+            new Chart(document.getElementById('ratingChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['1 ⭐', '2 ⭐', '3 ⭐', '4 ⭐', '5 ⭐'],
+                    datasets: [{
+                        label: 'จำนวนรีวิว',
+                        data: fullDist,
+                        backgroundColor: ['#EF4444', '#F97316', '#F59E0B', '#84CC16', '#22C55E'],
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#F3F4F6' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Top Views Horizontal Bar
+            if (data.topViewed.length > 0) {
+                new Chart(document.getElementById('viewsChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: data.topViewed.map(p => p.nameTh.length > 15 ? p.nameTh.substring(0,15) + '…' : p.nameTh),
+                        datasets: [{
+                            label: 'ยอดเข้าชม',
+                            data: data.topViewed.map(p => p.viewCount),
+                            backgroundColor: 'rgba(249, 115, 22, 0.8)',
+                            borderRadius: 6,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { beginAtZero: true, grid: { color: '#F3F4F6' } },
+                            y: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+
+        } catch (err) {
+            container.innerHTML = `<p class="loading-text" style="color:#EF4444;">❌ ไม่สามารถโหลดข้อมูลได้: ${err.message}</p>`;
+        }
+
+        function getCategoryEmoji(cat) {
+            const emojis = { nature: '🌳', temple: '🛕', history: '🏛️', art: '🎨', food: '🍽️', cafe: '☕', shopping: '🛍️', museum: '🏛️' };
+            return emojis[cat] || '📍';
+        }
+    })();
+    </script>
+</body>
+
+</html>

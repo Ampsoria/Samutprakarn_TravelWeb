@@ -1,0 +1,183 @@
+// Prisma Schema for Samutprakan Travel Web
+// Using SQLite for local dev, switch to PostgreSQL in production
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  fullName     String     @map("full_name")
+  avatarUrl    String?    @map("avatar_url")
+  role         String     @default("user") // "user" | "admin"
+  interests    String     @default("") // comma-separated: "temple,nature,cafe"
+  langPref     String     @default("th") @map("lang_pref")
+  isActive     Boolean    @default(true) @map("is_active")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  reviews      Review[]   @relation("UserReviews")
+  reviewedBy   Review[]   @relation("ReviewedByAdmin")
+  bookmarks    Bookmark[]
+  checkIns     CheckIn[]
+  pageViews    PageView[]
+  createdPlaces Place[]   @relation("CreatedByUser")
+
+  @@map("users")
+}
+
+model Place {
+  id             Int          @id @default(autoincrement())
+  nameTh         String       @map("name_th")
+  nameEn         String?      @map("name_en")
+  slug           String       @unique
+  descriptionTh  String?      @map("description_th")
+  descriptionEn  String?      @map("description_en")
+  category       String       // nature, temple, history, art, food, cafe, shopping
+  amphoe         String       // mueang, bang_phli, phra_pradaeng, etc.
+  address        String?
+  latitude       Float?
+  longitude      Float?
+  price          Int          @default(0)
+  openingHours   String?      @map("opening_hours") // JSON string
+  contactPhone   String?      @map("contact_phone")
+  websiteUrl     String?      @map("website_url")
+  googleMapsUrl  String?      @map("google_maps_url")
+  isPublished    Boolean      @default(true) @map("is_published")
+  viewCount      Int          @default(0) @map("view_count")
+  createdById    Int?         @map("created_by")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  createdBy      User?        @relation("CreatedByUser", fields: [createdById], references: [id])
+  images         PlaceImage[]
+  reviews        Review[]
+  bookmarks      Bookmark[]
+  checkIns       CheckIn[]
+  pageViews      PageView[]
+
+  @@map("places")
+}
+
+model PlaceImage {
+  id         Int      @id @default(autoincrement())
+  placeId    Int      @map("place_id")
+  imageUrl   String   @map("image_url")
+  altText    String?  @map("alt_text")
+  isCover    Boolean  @default(false) @map("is_cover")
+  sortOrder  Int      @default(0) @map("sort_order")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  place      Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+
+  @@map("place_images")
+}
+
+model Review {
+  id           Int       @id @default(autoincrement())
+  placeId      Int       @map("place_id")
+  userId       Int       @map("user_id")
+  rating       Int       // 1-5
+  comment      String?
+  status       String    @default("pending") // pending, approved, rejected
+  reviewedById Int?      @map("reviewed_by")
+  reviewedAt   DateTime? @map("reviewed_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  place        Place     @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  user         User      @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
+  reviewedBy   User?     @relation("ReviewedByAdmin", fields: [reviewedById], references: [id])
+
+  @@unique([placeId, userId])
+  @@map("reviews")
+}
+
+model Bookmark {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  placeId   Int      @map("place_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  place     Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, placeId])
+  @@map("bookmarks")
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  nameTh    String   @map("name_th")
+  nameEn    String?  @map("name_en")
+  icon      String?
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("categories")
+}
+
+model Amphoe {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  nameTh    String   @map("name_th")
+  nameEn    String?  @map("name_en")
+  sortOrder Int      @default(0) @map("sort_order")
+
+  @@map("amphoes")
+}
+
+model CheckIn {
+  id        Int      @id @default(autoincrement())
+  userId    Int?     @map("user_id")
+  placeId   Int      @map("place_id")
+  checkedAt DateTime @default(now()) @map("checked_at")
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  place     Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+
+  @@map("check_ins")
+}
+
+model PageView {
+  id        Int      @id @default(autoincrement())
+  placeId   Int?     @map("place_id")
+  userId    Int?     @map("user_id")
+  ipAddress String?  @map("ip_address")
+  viewedAt  DateTime @default(now()) @map("viewed_at")
+
+  place     Place?   @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("page_views")
+}
+
+model SurveyResponse {
+  id         Int      @id @default(autoincrement())
+  q1         Int      // ความสวยงามของเว็บไซต์
+  q2         Int      // ความง่ายในการใช้งาน
+  q3         Int      // ข้อมูลสถานที่ครบถ้วน
+  q4         Int      // ระบบค้นหาใช้งานง่าย
+  q5         Int      // รูปภาพมีคุณภาพ
+  q6         Int      // ความรวดเร็วของเว็บไซต์
+  q7         Int      // ระบบรีวิวมีประโยชน์
+  q8         Int      // เว็บไซต์ช่วยตัดสินใจเดินทาง
+  q9         Int      // ความพึงพอใจโดยรวม
+  q10        Int      // จะแนะนำเว็บไซต์ให้ผู้อื่น
+  comment    String?  // ข้อเสนอแนะเพิ่มเติม
+  gender     String?  // เพศ
+  ageRange   String?  @map("age_range") // ช่วงอายุ
+  ipAddress  String?  @map("ip_address")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("survey_responses")
+}

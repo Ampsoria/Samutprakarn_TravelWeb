@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการสถานที่ | Admin</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        /* ===== Place Items ===== */
+        .place-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            background: white;
+            padding: var(--spacing-3);
+            border-bottom: 1px solid var(--border-light);
+            transition: background 0.2s;
+        }
+        .place-item:hover {
+            background: #FAFBFC;
+        }
+        .place-item:last-child {
+            border-bottom: none;
+        }
+        .place-item-img {
+            width: 88px;
+            height: 88px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            background: linear-gradient(135deg, #f0e6d3, #d4b896);
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .place-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .place-item-info h3 {
+            font-size: 1.05rem;
+            margin: 0 0 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .place-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* ===== Modal Overlay ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-box {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 640px;
+            padding: var(--spacing-4);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: slideUpIn 0.3s ease;
+        }
+        .show-modal {
+            display: flex !important;
+        }
+
+        /* ===== Upload Dropzone ===== */
+        .upload-dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #FAFBFC;
+            position: relative;
+        }
+        .upload-dropzone:hover {
+            border-color: var(--primary-orange);
+            background: #FFF7ED;
+        }
+        .upload-dropzone.drag-over {
+            border-color: var(--primary-orange);
+            background: #FFF7ED;
+            transform: scale(1.01);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        }
+        .upload-dropzone-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, var(--primary-orange), #F97316);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .upload-dropzone-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .upload-dropzone-text strong {
+            color: var(--primary-orange);
+        }
+
+        /* ===== Image Preview ===== */
+        .image-preview-container {
+            display: none;
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .image-preview-container.has-image {
+            display: block;
+        }
+        .image-preview-container img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+        }
+        .image-preview-remove {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        .image-preview-remove:hover {
+            background: #DC2626;
+        }
+        .image-preview-name {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .image-preview-name svg {
+            width: 14px;
+            height: 14px;
+            color: #22C55E;
+        }
+
+        /* ===== Modal Header ===== */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-4);
+            padding-bottom: var(--spacing-3);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .modal-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-header h2 .modal-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, #FFF7ED, #FFEDD5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .modal-close:hover {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        /* ===== Loading state ===== */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            top: 50%;
+            left: 50%;
+            margin: -9px 0 0 -9px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUpIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== Page header ===== */
+        .page-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-4);
+        }
+        .page-title-bar h1 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .place-count-badge {
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: #FFF7ED;
+            color: var(--primary-orange);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="nav-logo" style="justify-content:center;">
+                    <span style="color:var(--primary-orange);">Admin</span>Panel
+                </a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dash.html" class="sidebar-link">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    <span data-i18n="admin_nav_dash">ภาพรวม (Dashboard)</span>
+                </a>
+                <a href="admin-users.html" class="sidebar-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <span data-i18n="admin_nav_users">จัดการผู้ใช้งาน</span>
+                </a>
+                <a href="admin-places.html" class="sidebar-link active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span data-i18n="admin_nav_places">จัดการสถานที่</span>
+                </a>
+                <a href="admin-reviews.html" class="sidebar-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                        </path>
+                    </svg>
+                    <span data-i18n="admin_nav_reviews">ตรวจสอบรีวิว</span>
+                </a>
+            </nav>
+            <div style="padding:var(--spacing-3);">
+                <div class="lang-switch mb-3" style="justify-content:center;">
+                    <button class="lang-btn active" data-lang="th">TH</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
+                <a href="login.html" class="btn btn-outline btn-full text-small" data-i18n="admin_logout">ออกจากระบบ</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <div class="page-title-bar">
+                <h1 class="h2">
+                    <span data-i18n="admin_places_title">จัดการสถานที่</span>
+                    <span class="place-count-badge" id="placeCountBadge">0 สถานที่</span>
+                </h1>
+                <button class="btn btn-primary" id="btnOpenAddModal">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right:6px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span data-i18n="admin_places_add">เพิ่มสถานที่ใหม่</span>
+                </button>
+            </div>
+
+            <!-- Header Filter -->
+            <div class="flex gap-2 mb-3">
+                <input class="input-field" id="adminSearchInput" style="max-width:300px; background:white;" data-i18n="admin_places_search"
+                    placeholder="พิมพ์ชื่อเพื่อค้นหา...">
+                <select class="input-field" id="adminCatFilter" style="max-width:200px; background:white;">
+                    <option value="" data-i18n="admin_places_filter_all">ทั้งหมด (หมวดหมู่)</option>
+                    <option value="nature" data-i18n="badge_nature">ธรรมชาติ</option>
+                    <option value="temple" data-i18n="badge_temple">วัด</option>
+                    <option value="history" data-i18n="badge_history">ประวัติศาสตร์</option>
+                    <option value="art" data-i18n="badge_art">ศิลปะ</option>
+                    <option value="food" data-i18n="badge_food">อาหาร</option>
+                    <option value="cafe" data-i18n="badge_cafe">คาเฟ่</option>
+                </select>
+            </div>
+
+            <div class="card" style="padding:0; overflow:hidden;" id="adminPlacesList">
+                <!-- Data rendered by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== Modal Form (Add Place) ===== -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 class="h3">
+                    <span class="modal-icon">📍</span>
+                    <span data-i18n="admin_places_modal_title">เพิ่มสถานที่ใหม่</span>
+                </h2>
+                <button class="modal-close" onclick="closeModal('addModal')">✕</button>
+            </div>
+
+            <form id="adminAddPlaceForm">
+                <div class="input-group">
+                    <label class="input-label" data-i18n="admin_places_form_name">ชื่อสถานที่ (ไทย)</label>
+                    <input type="text" name="nameTh" class="input-field" required
+                        placeholder="ตัวอย่าง: วัดบางพลีใหญ่ใน">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">ชื่อสถานที่ (อังกฤษ)</label>
+                    <input type="text" name="nameEn" class="input-field"
+                        placeholder="Example: Wat Bang Phli Yai Nai">
+                </div>
+
+                <div class="grid-cols-2">
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="admin_places_form_cat">หมวดหมู่</label>
+                        <select name="category" class="input-field">
+                            <option value="temple">🛕 วัด/สถานที่ศักดิ์สิทธิ์</option>
+                            <option value="nature">🌳 ธรรมชาติ</option>
+                            <option value="history">🏛️ ประวัติศาสตร์</option>
+                            <option value="art">🎨 ศิลปวัฒนธรรม</option>
+                            <option value="food">🍽️ อาหาร</option>
+                            <option value="cafe">☕ คาเฟ่/ร้านอาหาร</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="admin_places_form_amphoe">อำเภอ</label>
+                        <select name="amphoe" class="input-field">
+                            <option value="mueang">เมืองสมุทรปราการ</option>
+                            <option value="bang_phli">บางพลี</option>
+                            <option value="phra_pradaeng">พระประแดง</option>
+                            <option value="phra_samut_chedi">พระสมุทรเจดีย์</option>
+                            <option value="bang_bo">บางบ่อ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" data-i18n="admin_places_form_desc">รายละเอียด</label>
+                    <textarea name="descriptionTh" class="input-field" rows="3"
+                        placeholder="พิมพ์คำบรรยายสถานที่..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">ค่าเข้าชม (บาท)</label>
+                    <input type="number" name="price" class="input-field" value="0" min="0"
+                        placeholder="0 = ฟรี">
+                </div>
+
+                <div class="input-group mb-4">
+                    <label class="input-label" data-i18n="admin_places_form_image">อัปโหลดรูปภาพ</label>
+                    <!-- Dropzone -->
+                    <div class="upload-dropzone" id="addDropzone">
+                        <input type="file" id="addFileInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                        <div class="upload-dropzone-icon">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="upload-dropzone-text">
+                            <strong>คลิกเพื่อเลือกรูป</strong> หรือลากไฟล์มาวางที่นี่<br>
+                            <span class="text-small">รองรับ JPG, PNG, WebP (สูงสุด 5MB)</span>
+                        </div>
+                    </div>
+                    <!-- Preview -->
+                    <div class="image-preview-container" id="addPreview">
+                        <img src="" alt="Preview" id="addPreviewImg">
+                        <button type="button" class="image-preview-remove" id="addPreviewRemove">✕</button>
+                        <div class="image-preview-name" id="addPreviewName">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('addModal')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary" id="addSubmitBtn">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right:4px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== Modal Form (Edit Place) ===== -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 class="h3">
+                    <span class="modal-icon">✏️</span>
+                    <span>แก้ไขสถานที่</span>
+                </h2>
+                <button class="modal-close" onclick="closeModal('editModal')">✕</button>
+            </div>
+
+            <form id="adminEditPlaceForm">
+                <input type="hidden" name="id" id="editPlaceId">
+
+                <div class="input-group">
+                    <label class="input-label">ชื่อสถานที่ (ไทย)</label>
+                    <input type="text" name="nameTh" id="editNameTh" class="input-field" required>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">ชื่อสถานที่ (อังกฤษ)</label>
+                    <input type="text" name="nameEn" id="editNameEn" class="input-field">
+                </div>
+
+                <div class="grid-cols-2">
+                    <div class="input-group">
+                        <label class="input-label">หมวดหมู่</label>
+                        <select name="category" id="editCategory" class="input-field">
+                            <option value="temple">🛕 วัด/สถานที่ศักดิ์สิทธิ์</option>
+                            <option value="nature">🌳 ธรรมชาติ</option>
+                            <option value="history">🏛️ ประวัติศาสตร์</option>
+                            <option value="art">🎨 ศิลปวัฒนธรรม</option>
+                            <option value="food">🍽️ อาหาร</option>
+                            <option value="cafe">☕ คาเฟ่/ร้านอาหาร</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">อำเภอ</label>
+                        <select name="amphoe" id="editAmphoe" class="input-field">
+                            <option value="mueang">เมืองสมุทรปราการ</option>
+                            <option value="bang_phli">บางพลี</option>
+                            <option value="phra_pradaeng">พระประแดง</option>
+                            <option value="phra_samut_chedi">พระสมุทรเจดีย์</option>
+                            <option value="bang_bo">บางบ่อ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">ค่าเข้าชม (บาท)</label>
+                    <input type="number" name="price" id="editPrice" class="input-field" value="0" min="0">
+                </div>
+
+                <div class="input-group mb-4">
+                    <label class="input-label">เปลี่ยนรูปภาพ</label>
+                    <!-- Current image -->
+                    <div id="editCurrentImage" style="margin-bottom:8px;">
+                        <p class="text-small text-muted mb-1">รูปปัจจุบัน:</p>
+                        <img id="editCurrentImg" src="" alt="Current" style="width:100%; height:160px; object-fit:cover; border-radius:var(--radius-md); background:#f0f0f0;">
+                    </div>
+                    <!-- Dropzone -->
+                    <div class="upload-dropzone" id="editDropzone">
+                        <input type="file" id="editFileInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                        <div class="upload-dropzone-icon">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="upload-dropzone-text">
+                            <strong>คลิกเพื่อเลือกรูปใหม่</strong> หรือลากไฟล์มาวางที่นี่<br>
+                            <span class="text-small">เว้นว่างไว้ถ้าไม่ต้องการเปลี่ยนรูป</span>
+                        </div>
+                    </div>
+                    <!-- Preview -->
+                    <div class="image-preview-container" id="editPreview">
+                        <img src="" alt="Preview" id="editPreviewImg">
+                        <button type="button" class="image-preview-remove" id="editPreviewRemove">✕</button>
+                        <div class="image-preview-name" id="editPreviewName">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editModal')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary" id="editSubmitBtn">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right:4px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        บันทึกการแก้ไข
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+    /* ===== Admin Places — Upload & Modal Logic ===== */
+    (function() {
+        // --- State ---
+        let addSelectedFile = null;
+        let editSelectedFile = null;
+
+        // --- Modal Helpers ---
+        window.closeModal = function(id) {
+            document.getElementById(id).classList.remove('show-modal');
+        };
+
+        // Open Add Modal
+        document.getElementById('btnOpenAddModal').addEventListener('click', () => {
+            // Reset form
+            document.getElementById('adminAddPlaceForm').reset();
+            addSelectedFile = null;
+            document.getElementById('addPreview').classList.remove('has-image');
+            document.getElementById('addModal').classList.add('show-modal');
+        });
+
+        // --- Dropzone Setup (reusable) ---
+        function setupDropzone(dropzoneId, fileInputId, previewId, previewImgId, previewNameId, previewRemoveId, onFileSelected) {
+            const dropzone = document.getElementById(dropzoneId);
+            const fileInput = document.getElementById(fileInputId);
+            const preview = document.getElementById(previewId);
+            const previewImg = document.getElementById(previewImgId);
+            const previewName = document.getElementById(previewNameId);
+            const previewRemove = document.getElementById(previewRemoveId);
+
+            // Click to open file picker
+            dropzone.addEventListener('click', () => fileInput.click());
+
+            // Drag events
+            ['dragenter', 'dragover'].forEach(evt => {
+                dropzone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('drag-over');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(evt => {
+                dropzone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('drag-over');
+                });
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            // File input change
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            // Remove preview
+            previewRemove.addEventListener('click', (e) => {
+                e.stopPropagation();
+                preview.classList.remove('has-image');
+                previewImg.src = '';
+                fileInput.value = '';
+                dropzone.style.display = '';
+                onFileSelected(null);
+            });
+
+            function handleFile(file) {
+                // Validate
+                const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!allowed.includes(file.type)) {
+                    alert('รองรับเฉพาะไฟล์ JPG, PNG, WebP เท่านั้น');
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('ไฟล์ใหญ่เกินไป (สูงสุด 5MB)');
+                    return;
+                }
+
+                onFileSelected(file);
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                    preview.classList.add('has-image');
+                    previewName.querySelector('span').textContent = file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
+                    dropzone.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Setup both dropzones
+        setupDropzone('addDropzone', 'addFileInput', 'addPreview', 'addPreviewImg', 'addPreviewName', 'addPreviewRemove',
+            (file) => { addSelectedFile = file; });
+
+        setupDropzone('editDropzone', 'editFileInput', 'editPreview', 'editPreviewImg', 'editPreviewName', 'editPreviewRemove',
+            (file) => { editSelectedFile = file; });
+
+        // --- Add Place Form Submit ---
+        document.getElementById('adminAddPlaceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('addSubmitBtn');
+            btn.classList.add('btn-loading');
+
+            try {
+                let imageUrl = null;
+
+                // 1. Upload image first if selected
+                if (addSelectedFile) {
+                    const uploadResult = await UploadAPI.uploadImage(addSelectedFile);
+                    imageUrl = uploadResult.imageUrl;
+                }
+
+                // 2. Get form data
+                const form = e.target;
+                const placeData = {
+                    nameTh: form.querySelector('[name="nameTh"]').value,
+                    nameEn: form.querySelector('[name="nameEn"]').value || undefined,
+                    category: form.querySelector('[name="category"]').value,
+                    amphoe: form.querySelector('[name="amphoe"]').value,
+                    descriptionTh: form.querySelector('[name="descriptionTh"]').value || undefined,
+                    price: form.querySelector('[name="price"]').value || '0',
+                };
+                if (imageUrl) placeData.imageUrl = imageUrl;
+
+                // 3. Create place via API
+                await PlacesAPI.create(placeData);
+
+                closeModal('addModal');
+                alert('เพิ่มสถานที่สำเร็จ ✅');
+                addSelectedFile = null;
+                form.reset();
+                if (window.loadAdminPlaces) loadAdminPlaces();
+
+            } catch (err) {
+                alert(err.message || 'เกิดข้อผิดพลาด');
+            } finally {
+                btn.classList.remove('btn-loading');
+            }
+        });
+
+        // --- Open Edit Modal ---
+        window.openEditModal = function(id, nameTh, nameEn, category, amphoe, price, imgUrl) {
+            document.getElementById('editPlaceId').value = id;
+            document.getElementById('editNameTh').value = nameTh || '';
+            document.getElementById('editNameEn').value = nameEn || '';
+            document.getElementById('editCategory').value = category || 'nature';
+            document.getElementById('editAmphoe').value = amphoe || 'mueang';
+            document.getElementById('editPrice').value = price || 0;
+
+            // Show current image
+            const currentImg = document.getElementById('editCurrentImg');
+            if (imgUrl && imgUrl !== 'null') {
+                currentImg.src = imgUrl;
+                currentImg.style.display = '';
+            } else {
+                currentImg.style.display = 'none';
+            }
+
+            // Reset upload state
+            editSelectedFile = null;
+            document.getElementById('editPreview').classList.remove('has-image');
+            document.getElementById('editDropzone').style.display = '';
+            document.getElementById('editFileInput').value = '';
+
+            document.getElementById('editModal').classList.add('show-modal');
+        };
+
+        // --- Edit Place Form Submit ---
+        document.getElementById('adminEditPlaceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('editSubmitBtn');
+            btn.classList.add('btn-loading');
+
+            try {
+                const id = document.getElementById('editPlaceId').value;
+                let imageUrl = null;
+
+                // 1. Upload new image if selected
+                if (editSelectedFile) {
+                    const uploadResult = await UploadAPI.uploadImage(editSelectedFile);
+                    imageUrl = uploadResult.imageUrl;
+                }
+
+                // 2. Build update data
+                const updateData = {
+                    nameTh: document.getElementById('editNameTh').value,
+                    nameEn: document.getElementById('editNameEn').value || undefined,
+                    category: document.getElementById('editCategory').value,
+                    amphoe: document.getElementById('editAmphoe').value,
+                    price: parseInt(document.getElementById('editPrice').value) || 0,
+                };
+                if (imageUrl) updateData.imageUrl = imageUrl;
+
+                // 3. Update via API
+                await PlacesAPI.update(id, updateData);
+
+                closeModal('editModal');
+                alert('อัปเดตสถานที่สำเร็จ ✅');
+                editSelectedFile = null;
+                if (window.loadAdminPlaces) loadAdminPlaces();
+
+            } catch (err) {
+                alert(err.message || 'เกิดข้อผิดพลาด');
+            } finally {
+                btn.classList.remove('btn-loading');
+            }
+        });
+
+        // --- Search & Filter ---
+        const searchInput = document.getElementById('adminSearchInput');
+        const catFilter = document.getElementById('adminCatFilter');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => { if (window.loadAdminPlaces) loadAdminPlaces(); });
+        }
+        if (catFilter) {
+            catFilter.addEventListener('change', () => { if (window.loadAdminPlaces) loadAdminPlaces(); });
+        }
+
+    })();
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สถิติการเดินทาง | Samut Prakan Travel</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            background: white;
+            padding: var(--spacing-3);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .stat-rank-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            padding: var(--spacing-2) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-rank-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank-number {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-orange);
+            width: 24px;
+            text-align: center;
+        }
+
+        .rank-info {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body class="user-layout">
+
+    <!-- Top Navbar -->
+    <nav class="top-nav">
+        <h1 class="h3" style="margin:0;" data-i18n="stats_title">สถิติการเดินทาง</h1>
+        <div class="nav-actions flex items-center gap-3">
+            <div class="lang-switch" style="margin:0;">
+                <button class="lang-btn active" data-lang="th">TH</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="app-container" style="padding: var(--spacing-4);">
+
+        <h2 class="h3 mb-2" data-i18n="stats_trend_title">เทรนด์การเช็คอิน (สมุทรปราการ)</h2>
+        <p class="text-small text-muted mb-3" data-i18n="stats_trend_sub">เจาะลึกความนิยมในแต่ละเดือน</p>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <canvas id="trendChart"></canvas>
+        </div>
+
+        <h2 class="h3 mb-3" data-i18n="stats_top5">5 อันดับ ประเภทสถานที่ยอดฮิต</h2>
+
+        <div class="card">
+            <div class="stat-rank-item">
+                <div class="rank-number">1</div>
+                <div class="rank-info">
+                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_nature">ธรรมชาติ & ตากอากาศ</h4>
+                    <div class="text-small text-muted">ผู้เข้าชมกว่า 45,000 ครั้ง</div>
+                </div>
+                <div class="badge">🔥 ฮิตมาก</div>
+            </div>
+            <div class="stat-rank-item">
+                <div class="rank-number">2</div>
+                <div class="rank-info">
+                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_cafe">คาเฟ่ & ร้านอาหาร</h4>
+                    <div class="text-small text-muted">ผู้เข้าชมกว่า 38,200 ครั้ง</div>
+                </div>
+            </div>
+            <div class="stat-rank-item">
+                <div class="rank-number">3</div>
+                <div class="rank-info">
+                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_temple">วัด & สถานที่ศักดิ์สิทธิ์
+                    </h4>
+                    <div class="text-small text-muted">ผู้เข้าชมกว่า 29,500 ครั้ง</div>
+                </div>
+            </div>
+            <div class="stat-rank-item">
+                <div class="rank-number">4</div>
+                <div class="rank-info">
+                    <h4 style="font-size:1rem; margin-bottom:4px;">พิพิธภัณฑ์</h4>
+                    <div class="text-small text-muted">ผู้เข้าชมกว่า 15,400 ครั้ง</div>
+                </div>
+            </div>
+            <div class="stat-rank-item">
+                <div class="rank-number">5</div>
+                <div class="rank-info">
+                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_shopping">ตลาดน้ำ & ช้อปปิ้ง</h4>
+                    <div class="text-small text-muted">ผู้เข้าชมกว่า 12,100 ครั้ง</div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="home.html" class="bottom-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                </path>
+            </svg>
+            <span data-i18n="nav_home">หน้าแรก</span>
+        </a>
+        <a href="search.html" class="bottom-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span data-i18n="nav_search">ค้นหา</span>
+        </a>
+        <a href="stats.html" class="bottom-nav-item active">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M16 8v8m-4-5v5m-4-2v2m-2 4h12c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2z">
+                </path>
+            </svg>
+            <span data-i18n="nav_stats">สถิติ</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            <span data-i18n="nav_profile">โปรไฟล์</span>
+        </a>
+    </nav>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Chart Config -->
+    <script>
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        const trendChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.'],
+                datasets: [{
+                    label: 'จำนวนผู้มาเยือนสมุทรปราการ',
+                    data: [12000, 19000, 15000, 25000, 18000, 22000],
+                    borderColor: '#F97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#EA580C'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#F3F4F6' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

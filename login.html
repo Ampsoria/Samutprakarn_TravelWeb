@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ | Samut Prakan Travel</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .auth-tabs {
+            display: flex;
+            gap: var(--spacing-2);
+            margin-bottom: var(--spacing-3);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: var(--spacing-1);
+        }
+
+        .auth-tab {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding-bottom: var(--spacing-1);
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--primary-orange);
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-orange);
+        }
+
+        .auth-right {
+            position: relative;
+        }
+
+        .auth-hero-img-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6));
+            z-index: 1;
+        }
+
+        .auth-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .auth-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-layout">
+        <div class="auth-left">
+            <div class="auth-box card">
+
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="h2" data-i18n="auth_title">ยินดีต้อนรับสู่<br><span
+                            style="color: var(--primary-orange);">สมุทรปราการ</span></h2>
+
+                    <div class="lang-switch">
+                        <button class="lang-btn active" data-lang="th">TH</button>
+                        <button class="lang-btn" data-lang="en">EN</button>
+                    </div>
+                </div>
+
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="showLogin" data-i18n="auth_login">เข้าสู่ระบบ</div>
+                    <div class="auth-tab" id="showRegister" data-i18n="auth_register">สมัครสมาชิก</div>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="auth_email">อีเมล</label>
+                        <input type="email" class="input-field" placeholder="example@email.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="auth_password">รหัสผ่าน</label>
+                        <input type="password" class="input-field" placeholder="••••••••" required>
+                    </div>
+                    <div class="mb-3 text-right">
+                        <a href="#" class="text-small text-muted" data-i18n="auth_forgot">ลืมรหัสผ่าน?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full"
+                        data-i18n="auth_btn_login">เข้าสู่ระบบ</button>
+
+                    <!-- Admin Quick Login -->
+                    <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border-color); text-align:center;">
+                        <p class="text-small text-muted" style="margin-bottom:10px;">🛠️ สำหรับผู้ดูแลระบบ</p>
+                        <button type="button" class="btn btn-full" id="adminLoginBtn"
+                            style="background:linear-gradient(135deg, #F97316, #EA580C); color:white; border:none; padding:10px; border-radius:var(--radius-md); cursor:pointer; font-weight:600; font-family:inherit; transition: transform 0.2s;">
+                            🛠️ เข้าสู่ระบบ Admin
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- Register Form + Interests -->
+                <form id="registerForm" style="display: none;">
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="auth_name">ชื่อ - นามสกุล</label>
+                        <input type="text" class="input-field" placeholder="นายโอ่ง อัลปาก้า" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="auth_email">อีเมล</label>
+                        <input type="email" class="input-field" placeholder="example@email.com" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-label" data-i18n="auth_password">รหัสผ่าน</label>
+                        <input type="password" class="input-field" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="input-label mb-1" style="display:block;"
+                            data-i18n="auth_interest">เลือกสิ่งที่คุณสนใจ
+                            (เพื่อแนะนำสถานที่)</label>
+                        <div class="tags-container">
+                            <button type="button" class="tag-btn" data-i18n="tag_cafe">☕ คาเฟ่</button>
+                            <button type="button" class="tag-btn active" data-i18n="tag_temple">🛕 วัดและธรรมะ</button>
+                            <button type="button" class="tag-btn" data-i18n="tag_nature">🌳 ธรรมชาติ</button>
+                            <button type="button" class="tag-btn" data-i18n="tag_photo">📸 จุดถ่ายรูป</button>
+                            <button type="button" class="tag-btn active" data-i18n="tag_food">🍽️ ร้านอาหารเด็ด</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full"
+                        data-i18n="auth_btn_register">สร้างบัญชีและเริ่มเดินทาง</button>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="auth-right">
+            <!-- Simulated background image with overlay -->
+            <div class="auth-hero-img-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2000&auto=format&fit=crop"
+                class="auth-hero-img" alt="Samut Prakan Scenery - Bang Pu">
+            <div class="auth-hero-content">
+                <h1 class="h1 mb-2" style="color: white;">Explore<br>Samut Prakan</h1>
+                <p class="text-body" style="color: #F9FAFB; max-width: 300px; margin: 0 auto;">
+                    Discover the beauty of culture, nature, and modern life in one place.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Auto-switch to register tab if #register hash
+        if (window.location.hash === '#register') {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = '';
+            document.getElementById('showLogin').classList.remove('active');
+            document.getElementById('showRegister').classList.add('active');
+        }
+
+        // Admin quick login button
+        document.getElementById('adminLoginBtn')?.addEventListener('click', async function() {
+            const btn = this;
+            btn.disabled = true;
+            btn.textContent = '⏳ กำลังเข้าสู่ระบบ...';
+
+            try {
+                await AuthAPI.login('admin@samutprakan.com', 'admin123');
+                window.location.href = 'admin-dash.html';
+            } catch(err) {
+                alert('ไม่สามารถเข้าสู่ระบบ Admin ได้: ' + (err.message || 'Unknown error'));
+                btn.disabled = false;
+                btn.textContent = '🛠️ เข้าสู่ระบบ Admin';
+            }
+        });
+    </script>
+</body>
+
+</html>
