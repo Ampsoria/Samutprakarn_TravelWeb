@@ -381,3 +381,75 @@ table tr:hover {
     display: flex;
     gap: 6px;
 }
+
+/* === Mobile Admin Sidebar === */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text-dark);
+    border-radius: var(--radius-sm);
+    transition: background var(--duration-fast);
+}
+
+.mobile-menu-btn:hover {
+    background: var(--bg-subtle);
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 199;
+    backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .admin-layout .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        z-index: 200;
+        transition: left 0.3s var(--ease-smooth);
+        width: 260px;
+    }
+
+    .admin-layout .sidebar.open {
+        left: 0;
+    }
+
+    .admin-layout .main-content {
+        padding: var(--spacing-2);
+        max-height: none;
+    }
+
+    /* Search bar in top-nav */
+    .top-nav .search-bar {
+        width: 100% !important;
+        max-width: 200px;
+    }
+
+    .top-nav .nav-actions {
+        gap: var(--spacing-1);
+    }
+
+    /* Tables scroll horizontally */
+    .main-content table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

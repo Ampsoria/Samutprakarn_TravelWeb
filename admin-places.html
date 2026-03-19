@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#F97316">
+    <link rel="manifest" href="manifest.json">
     <title>จัดการสถานที่ | Admin</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
@@ -278,6 +280,9 @@
 <body>
     <div class="admin-layout">
 
+        <!-- Mobile Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -332,10 +337,15 @@
         <main class="main-content">
 
             <div class="page-title-bar">
-                <h1 class="h2">
-                    <span data-i18n="admin_places_title">จัดการสถานที่</span>
-                    <span class="place-count-badge" id="placeCountBadge">0 สถานที่</span>
-                </h1>
+                <div class="flex items-center gap-2">
+                    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                    <h1 class="h2">
+                        <span data-i18n="admin_places_title">จัดการสถานที่</span>
+                        <span class="place-count-badge" id="placeCountBadge">0 สถานที่</span>
+                    </h1>
+                </div>
                 <button class="btn btn-primary" id="btnOpenAddModal">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right:6px;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
@@ -794,6 +804,12 @@
         }
 
     })();
+    </script>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
     </script>
 
 </body>
