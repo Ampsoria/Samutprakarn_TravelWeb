@@ -6,7 +6,7 @@ const { generateAccessToken, generateRefreshToken, verifyRefreshToken } = requir
 // Validation schemas
 const registerSchema = z.object({
   email: z.string().email('อีเมลไม่ถูกต้อง'),
-  password: z.string().min(6, 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'),
+  password: z.string().min(8, 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร / Password must be at least 8 characters'),
   fullName: z.string().min(2, 'กรุณากรอกชื่อ-นามสกุล'),
   interests: z.string().optional(),
 });

@@ -509,8 +509,8 @@
             <script>
                 (function(){
                     try {
-                        const u = JSON.parse(localStorage.getItem('user'));
-                        if (u && u.name) document.getElementById('heroGreeting').textContent = 'สวัสดี, ' + u.name + '! 👋';
+                        const u = JSON.parse(localStorage.getItem('currentUser'));
+                        if (u && (u.fullName || u.name)) document.getElementById('heroGreeting').textContent = 'สวัสดี, ' + (u.fullName || u.name) + '! 👋';
                     } catch(e){}
                 })();
             </script>

@@ -242,7 +242,7 @@
         // Check if user is logged in
         (function() {
             const token = localStorage.getItem('accessToken');
-            const userStr = localStorage.getItem('user');
+            const userStr = localStorage.getItem('currentUser');
 
             if (!token || !userStr) {
                 // Not logged in — show login prompt
@@ -255,7 +255,7 @@
 
                 try {
                     const user = JSON.parse(userStr);
-                    const name = user.name || user.displayName || 'ผู้ใช้งาน';
+                    const name = user.fullName || user.name || user.displayName || 'ผู้ใช้งาน';
                     document.getElementById('displayName').textContent = name;
                     document.getElementById('displayAvatar').textContent = name.charAt(0);
                 } catch(e) {

@@ -519,6 +519,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = registerForm.querySelector('input[type="email"]').value;
             const password = registerForm.querySelector('input[type="password"]').value;
             const btn = registerForm.querySelector('button[type="submit"]');
+
+            // Validate password length
+            if (password.length < 8) {
+                const lang = localStorage.getItem('appLang') || 'th';
+                alert(lang === 'en'
+                    ? 'Password must be at least 8 characters'
+                    : 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
+                return;
+            }
+
             if (btn) btn.disabled = true;
 
             try {
