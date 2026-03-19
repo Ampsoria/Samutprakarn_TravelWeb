@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon server/index.js",
     "start": "node server/index.js",
+    "build": "npx prisma generate && npx prisma migrate deploy && node prisma/seed.js",
     "db:migrate": "npx prisma migrate dev",
     "db:seed": "node prisma/seed.js",
     "db:reset": "npx prisma migrate reset",
@@ -30,10 +31,10 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.10.1",
     "multer": "^2.1.1",
+    "prisma": "^5.22.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14",
-    "prisma": "^5.22.0"
+    "nodemon": "^3.1.14"
   }
 }
