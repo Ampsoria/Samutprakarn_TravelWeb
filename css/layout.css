@@ -481,7 +481,7 @@ table tr:hover {
         display: grid !important;
         grid-template-columns: none !important;
         grid-auto-flow: column !important;
-        grid-auto-columns: 180px !important; /* width of each card */
+        grid-auto-columns: calc(50% - 6px) !important; /* Matches exactly the 2-column width */
         overflow-x: auto !important;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
@@ -495,6 +495,13 @@ table tr:hover {
     
     .places-grid > * {
         scroll-snap-align: start;
+        scroll-snap-stop: always; /* Snap one by one nicely */
+    }
+
+    /* Place card images smaller on mobile */
+    .place-card .place-img,
+    .result-img {
+        height: 120px !important; /* Smaller image Height */
     }
 
     /* Override horizontal scrolling for trending on mobile to stack 2 cols */
