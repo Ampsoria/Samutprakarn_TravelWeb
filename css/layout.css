@@ -469,11 +469,32 @@ table tr:hover {
 
     /* Cards: strictly keep 2 columns on small phones for compact look */
     .grid-cols-2, .grid-cols-3, .grid-cols-4,
-    .destination-grid, .places-grid, .results-grid, .list-grid {
+    .destination-grid, .results-grid, .list-grid {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
         grid-auto-flow: row !important;
         gap: 8px !important;
+    }
+
+    /* Horizontal scroll for All Places on mobile */
+    .places-grid {
+        display: grid !important;
+        grid-template-columns: none !important;
+        grid-auto-flow: column !important;
+        grid-auto-columns: 180px !important; /* width of each card */
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 12px !important;
+        padding-bottom: 12px !important;
+    }
+    
+    .places-grid::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for clean App UI */
+    }
+    
+    .places-grid > * {
+        scroll-snap-align: start;
     }
 
     /* Override horizontal scrolling for trending on mobile to stack 2 cols */
