@@ -463,12 +463,25 @@
 
         @media (max-width: 640px) {
             /* Shrink top nav for 375px screens */
-            .home-nav-logo { font-size: 1.25rem; gap: 6px; }
-            .home-nav-logo svg { width: 22px; height: 22px; }
-            .home-nav-right { gap: 8px; }
+            .home-top-nav { padding: 12px 12px !important; }
+            .home-nav-logo { font-size: 1.15rem; gap: 4px; }
+            .home-nav-logo svg { width: 20px; height: 20px; }
+            .home-nav-right { gap: 6px; }
             .lang-switch { padding: 2px; }
-            .lang-btn { padding: 2px 6px; font-size: 0.7rem; }
-            .home-nav-right .btn { padding: 6px 12px !important; font-size: 0.75rem !important; }
+            .lang-btn { padding: 2px 4px; font-size: 0.7rem; }
+            .home-nav-right .btn { padding: 6px 10px !important; font-size: 0.75rem !important; }
+
+            /* Fix horizontal scroll overflows */
+            .section-header, .trending-row, .destination-grid, .all-places-section { 
+                padding-left: 16px !important; 
+                padding-right: 16px !important; 
+            }
+            .hero-section { padding: 24px 16px !important; }
+            
+            /* Aggressively hide lang-switch on very small screens to ensure Register fits */
+            @media (max-width: 390px) {
+                .lang-switch { display: none !important; }
+            }
 
             .hero-collage { 
                 grid-template-columns: 2fr 1fr; 
