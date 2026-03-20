@@ -1283,3 +1283,99 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadProfileBookmarks();
     }
 });
+
+/* === Service Worker Registration === */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('[SW] Registered:', reg.scope))
+            .catch(err => console.log('[SW] Registration failed:', err));
+    });
+}
+
+/* === PWA Install Prompt === */
+(function () {
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        // Don't show if user dismissed before
+        if (localStorage.getItem('pwaInstallDismissed')) return;
+
+        // Create install banner
+        const banner = document.createElement('div');
+        banner.id = 'pwaInstallBanner';
+        banner.innerHTML = `
+            <div style="position:fixed;bottom:80px;left:16px;right:16px;z-index:150;
+                background:linear-gradient(135deg,#18181B,#27272A);color:white;
+                padding:16px 20px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.25);
+                display:flex;align-items:center;gap:14px;
+                animation:fadeInUp 0.4s ease-out;">
+                <div style="width:44px;height:44px;border-radius:12px;
+                    background:linear-gradient(135deg,#F97316,#FB923C);
+                    display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">
+                    🏖️
+                </div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-weight:700;font-size:0.95rem;font-family:'Outfit',sans-serif;">
+                        ${(localStorage.getItem('appLang') || 'th') === 'en' ? 'Add to Home Screen' : 'เพิ่มลงหน้าจอหลัก'}
+                    </div>
+                    <div style="font-size:0.8rem;opacity:0.7;margin-top:2px;">
+                        ${(localStorage.getItem('appLang') || 'th') === 'en' ? 'Use like a real app — fast & offline' : 'ใช้งานเหมือน app จริง — เร็วและออฟไลน์ได้'}
+                    </div>
+                </div>
+                <button id="pwaInstallBtn" style="background:linear-gradient(135deg,#F97316,#FB923C);
+                    border:none;color:white;padding:8px 18px;border-radius:999px;
+                    font-weight:600;font-size:0.85rem;cursor:pointer;white-space:nowrap;
+                    font-family:'Outfit',sans-serif;">
+                    ${(localStorage.getItem('appLang') || 'th') === 'en' ? 'Install' : 'ติดตั้ง'}
+                </button>
+                <button id="pwaInstallClose" style="background:none;border:none;color:rgba(255,255,255,0.5);
+                    cursor:pointer;font-size:1.2rem;padding:4px 8px;">✕</button>
+            </div>
+        `;
+        document.body.appendChild(banner);
+
+        document.getElementById('pwaInstallBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log('[PWA] Install:', outcome);
+                deferredPrompt = null;
+            }
+            banner.remove();
+        });
+
+        document.getElementById('pwaInstallClose').addEventListener('click', () => {
+            localStorage.setItem('pwaInstallDismissed', '1');
+            banner.remove();
+        });
+    });
+
+    // Hide banner if already installed
+    window.addEventListener('appinstalled', () => {
+        const banner = document.getElementById('pwaInstallBanner');
+        if (banner) banner.remove();
+        console.log('[PWA] App installed!');
+    });
+})();
+
+/* === Scroll Animation (Intersection Observer) === */
+document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in-up');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    // Observe cards and sections
+    document.querySelectorAll('.card, .place-card, .result-card, .stat-card, .review-card, .list-card, .filter-panel, section').forEach(el => {
+        el.style.opacity = '0';
+        observer.observe(el);
+    });
+});

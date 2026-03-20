@@ -86,7 +86,12 @@ body {
 }
 
 /* === Typography === */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-heading);
     font-weight: 700;
     line-height: 1.2;
@@ -94,9 +99,17 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.02em;
 }
 
-h1 { font-size: clamp(2rem, 5vw, 3rem); }
-h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
-h3 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+}
+
+h2 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+h3 {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+}
 
 a {
     text-decoration: none;
@@ -104,17 +117,40 @@ a {
     transition: color var(--duration-normal) var(--ease-smooth);
 }
 
-ul { list-style: none; }
+ul {
+    list-style: none;
+}
 
 /* Typography Utility */
-.h1 { font-size: 3rem; }
-.h2 { font-size: 2.25rem; }
-.h3 { font-size: 1.5rem; }
+.h1 {
+    font-size: 3rem;
+}
 
-.text-body { font-size: 1rem; color: var(--text-body); }
-.text-small { font-size: 0.875rem; }
-.text-xs { font-size: 0.75rem; }
-.text-muted { color: var(--text-muted); }
+.h2 {
+    font-size: 2.25rem;
+}
+
+.h3 {
+    font-size: 1.5rem;
+}
+
+.text-body {
+    font-size: 1rem;
+    color: var(--text-body);
+}
+
+.text-small {
+    font-size: 0.875rem;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
 .text-gradient {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
@@ -122,27 +158,76 @@ ul { list-style: none; }
     background-clip: text;
 }
 
-.font-weight-600 { font-weight: 600; }
-.font-weight-700 { font-weight: 700; }
+.font-weight-600 {
+    font-weight: 600;
+}
+
+.font-weight-700 {
+    font-weight: 700;
+}
 
 /* === Spacing Utilities === */
-.mb-1 { margin-bottom: var(--spacing-1); }
-.mb-2 { margin-bottom: var(--spacing-2); }
-.mb-3 { margin-bottom: var(--spacing-3); }
-.mb-4 { margin-bottom: var(--spacing-4); }
-.mt-2 { margin-top: var(--spacing-2); }
-.mt-4 { margin-top: var(--spacing-4); }
+.mb-1 {
+    margin-bottom: var(--spacing-1);
+}
+
+.mb-2 {
+    margin-bottom: var(--spacing-2);
+}
+
+.mb-3 {
+    margin-bottom: var(--spacing-3);
+}
+
+.mb-4 {
+    margin-bottom: var(--spacing-4);
+}
+
+.mt-2 {
+    margin-top: var(--spacing-2);
+}
+
+.mt-4 {
+    margin-top: var(--spacing-4);
+}
 
 /* === Flexbox Utilities === */
-.flex { display: flex; }
-.flex-col { display: flex; flex-direction: column; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-1 { gap: var(--spacing-1); }
-.gap-2 { gap: var(--spacing-2); }
-.gap-3 { gap: var(--spacing-3); }
-.w-100 { width: 100%; }
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-1 {
+    gap: var(--spacing-1);
+}
+
+.gap-2 {
+    gap: var(--spacing-2);
+}
+
+.gap-3 {
+    gap: var(--spacing-3);
+}
+
+.w-100 {
+    width: 100%;
+}
 
 /* === Selection === */
 ::selection {
@@ -151,12 +236,19 @@ ul { list-style: none; }
 }
 
 /* === Scrollbar (WebKit) === */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 ::-webkit-scrollbar-thumb {
     background: var(--border-color);
     border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-light);
 }

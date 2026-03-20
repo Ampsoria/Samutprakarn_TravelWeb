@@ -464,9 +464,36 @@
         @media (max-width: 640px) {
             .hero-collage { grid-template-columns: 1fr; grid-template-rows: auto; }
             .hero-collage img:first-child { grid-row: auto; }
-            .destination-grid, .places-grid { grid-template-columns: 1fr; }
-            .trending-row { grid-template-columns: 1fr; }
+            .destination-grid, .places-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .trending-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
             .home-nav-links { display: none; }
+
+            /* Filter bar: stack nicely on mobile */
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 16px;
+                border-radius: var(--radius-md);
+                gap: 4px;
+            }
+            .filter-item {
+                min-width: 0;
+                width: 100%;
+                padding: 10px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border-light);
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+            }
+            .filter-item:last-of-type { border-bottom: none; }
+            .filter-label { margin-bottom: 0; min-width: 60px; }
+            .filter-value, .filter-value select { width: 100%; }
+            .filter-bar .btn-primary {
+                width: 100%;
+                border-radius: var(--radius-sm);
+                margin-top: 4px;
+            }
         }
 
         /* Bottom nav override for home */

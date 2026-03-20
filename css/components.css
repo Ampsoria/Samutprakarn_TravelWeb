@@ -23,7 +23,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
     pointer-events: none;
 }
 
@@ -78,9 +78,19 @@
     background: rgba(249, 115, 22, 0.15);
 }
 
-.btn-full { width: 100%; }
-.btn-sm { padding: 8px 16px; font-size: 0.85rem; }
-.btn-lg { padding: 16px 36px; font-size: 1.05rem; }
+.btn-full {
+    width: 100%;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+.btn-lg {
+    padding: 16px 36px;
+    font-size: 1.05rem;
+}
 
 /* Demo quick login buttons */
 .btn-demo-user {
@@ -170,8 +180,13 @@
     color: var(--text-dark);
 }
 
-.search-bar input:focus { outline: none; }
-.search-icon { color: var(--text-light); }
+.search-bar input:focus {
+    outline: none;
+}
+
+.search-icon {
+    color: var(--text-light);
+}
 
 /* --- Cards --- */
 .card {
@@ -544,11 +559,18 @@
     flex-shrink: 0;
 }
 
-.place-item-info { flex: 1; }
-.place-actions { display: flex; gap: 8px; }
+.place-item-info {
+    flex: 1;
+}
+
+.place-actions {
+    display: flex;
+    gap: 8px;
+}
 
 /* === Modal/Dialog === */
-.modal-overlay, .show-modal {
+.modal-overlay,
+.show-modal {
     display: flex;
     position: fixed;
     inset: 0;

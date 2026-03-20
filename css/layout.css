@@ -453,3 +453,123 @@ table tr:hover {
         white-space: nowrap;
     }
 }
+
+/* === Mobile App Enhancements (≤640px) === */
+@media (max-width: 640px) {
+
+    /* Home nav: tighter padding */
+    .home-top-nav {
+        padding: 14px 16px !important;
+    }
+
+    /* Detail hero: shorter on mobile */
+    .detail-hero {
+        height: 240px;
+    }
+
+    /* Cards: strictly keep 2 columns on small phones for compact look */
+    .grid-cols-2, .grid-cols-3, .grid-cols-4,
+    .destination-grid, .places-grid, .results-grid, .list-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-auto-flow: row !important;
+        gap: 8px !important;
+    }
+
+    /* Override horizontal scrolling for trending on mobile to stack 2 cols */
+    .trending-row, .stagger-children {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-auto-flow: row !important;
+        grid-auto-columns: auto !important;
+        gap: 8px !important;
+    }
+
+    /* Place card images shorter on mobile */
+    .place-card .place-img,
+    .result-img {
+        height: 140px;
+    }
+
+    /* Place card content: tighter */
+    .place-card .place-content {
+        padding: 10px 12px;
+    }
+
+    .place-card .place-content h3 {
+        font-size: 0.9rem;
+    }
+
+    /* Hero section: tighter */
+    .hero-section {
+        padding: var(--spacing-2);
+    }
+
+    .hero-section h1 {
+        font-size: 1.6rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+    }
+
+    /* Filter bar compact */
+    .filter-bar {
+        padding: 16px !important;
+    }
+
+    /* Auth box: edge to edge */
+    .auth-box {
+        border-radius: var(--radius-md);
+        padding: var(--spacing-3);
+    }
+
+    /* Bottom nav: larger tap targets */
+    .bottom-nav {
+        padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+    }
+
+    .bottom-nav-item {
+        padding: 6px 16px;
+        font-size: 0.65rem;
+    }
+
+    .bottom-nav-item svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Touch active states (mobile only) */
+    .btn:active {
+        transform: scale(0.96);
+        transition-duration: 0.05s;
+    }
+
+    .card:active,
+    .place-card:active,
+    .result-card:active,
+    .list-card:active {
+        transform: scale(0.98);
+        transition-duration: 0.1s;
+    }
+
+    .bottom-nav-item:active svg {
+        transform: scale(0.9);
+    }
+}
+
+/* === Standalone PWA Mode === */
+@media all and (display-mode: standalone) {
+    body {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    .top-nav,
+    .home-top-nav {
+        padding-top: calc(14px + env(safe-area-inset-top));
+    }
+
+    .bottom-nav {
+        padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    }
+}
