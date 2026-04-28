@@ -1105,11 +1105,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchResultsGrid) {
 
-        // Read query parameter 'q'
+        // Read query parameters from URL (sent by home page filter bar & category chips)
         const urlParams = new URLSearchParams(window.location.search);
         const qParam = urlParams.get('q');
+        const catParam = urlParams.get('category');
+        const amphoeParam = urlParams.get('amphoe');
+        const priceParam = urlParams.get('price');
+
         if (qParam && searchInput) {
             searchInput.value = qParam;
+        }
+
+        // Pre-check category filter checkboxes if URL has category param
+        if (catParam) {
+            catFilters.forEach(cb => {
+                if (cb.value === catParam) cb.checked = true;
+            });
         }
 
         const renderResults = async () => {
@@ -1119,21 +1130,28 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch { placesData = { places: [] }; }
             const places = placesData.places || [];
 
-            // Get active category filters
+            // Get active category filters (from checkboxes)
             const activeCats = Array.from(catFilters)
                 .filter(cb => cb.checked)
                 .map(cb => cb.value);
+
+            // Also apply URL category param if no checkboxes are active
+            const effectiveCats = activeCats.length > 0 ? activeCats : (catParam ? [catParam] : []);
 
             // Get search query
             const query = (searchInput ? searchInput.value.toLowerCase() : '');
 
             // Filter logic
             const filtered = places.filter(p => {
-                const matchCat = activeCats.length === 0 || activeCats.includes(p.category);
+                const matchCat = effectiveCats.length === 0 || effectiveCats.includes(p.category);
                 const matchQuery = !query ||
                     (p.nameTh && p.nameTh.toLowerCase().includes(query)) ||
                     (p.nameEn && p.nameEn.toLowerCase().includes(query));
-                return matchCat && matchQuery;
+                const matchAmphoe = !amphoeParam || p.amphoe === amphoeParam;
+                const matchPrice = !priceParam ||
+                    (priceParam === 'free' && p.price === 0) ||
+                    (priceParam === 'paid' && p.price > 0);
+                return matchCat && matchQuery && matchAmphoe && matchPrice;
             });
 
             // Update result count header if it exists
