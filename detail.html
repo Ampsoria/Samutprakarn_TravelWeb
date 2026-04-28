@@ -108,8 +108,8 @@
 
         <div class="flex justify-between w-full"
             style="position:absolute; top:var(--spacing-3); padding: 0 var(--spacing-3); z-index:20;">
-            <a href="search.html" class="back-btn-overlay" style="position:static;"
-                onclick="history.back(); return false;">
+            <a href="home.html" class="back-btn-overlay" style="position:static;"
+                onclick="if(document.referrer && !document.referrer.includes('detail.html')) { history.back(); } else { window.location.href='home.html'; } return false;">
                 <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
