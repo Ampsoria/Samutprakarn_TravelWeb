@@ -335,9 +335,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add click listeners to switcher buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            currentLang = e.target.getAttribute('data-lang');
-            localStorage.setItem('appLang', currentLang);
-            applyTranslations(currentLang);
+            const newLang = e.target.getAttribute('data-lang');
+            if (currentLang !== newLang) {
+                currentLang = newLang;
+                localStorage.setItem('appLang', currentLang);
+                window.location.reload(); // Reload to apply translations to all dynamic data
+            }
         });
     });
 });
@@ -899,7 +902,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td class="text-muted">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('th-TH') : (u.date || '-')}</td>
                     <td>
                         <div class="action-btns">
-                            <button class="btn btn-outline" style="padding: 4px 12px; font-size: 0.8rem;">แก้ไข</button>
+                            <button class="btn btn-outline" style="padding: 4px 12px; font-size: 0.8rem;" onclick="openEditUserModal(${u.id})">แก้ไข</button>
                             ${u.role !== 'admin' ? `<button class="btn" style="padding: 4px 12px; font-size: 0.8rem; background:#FEE2E2; color:#DC2626;" onclick="deleteAdminUser(${u.id})">แบน</button>` : ''}
                         </div>
                     </td>
@@ -918,6 +921,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         };
+
+        window.openEditUserModal = async (id) => {
+            try {
+                let users = [];
+                try {
+                    const data = await UsersAPI.getAll();
+                    users = data.users || [];
+                } catch (e) {
+                    users = [];
+                }
+                const user = users.find(u => u.id === id);
+                if (!user) throw new Error('User not found');
+
+                document.getElementById('editUserId').value = user.id;
+                document.getElementById('editUserFullName').value = user.fullName || user.name || '';
+                document.getElementById('editUserEmail').value = user.email || '';
+                document.getElementById('editUserRole').value = user.role || 'user';
+                document.getElementById('editUserIsActive').value = user.isActive === false ? 'false' : 'true';
+                
+                document.getElementById('editUserModal').classList.add('show-modal');
+            } catch (err) {
+                alert(err.message || 'Error loading user data');
+            }
+        };
+
+        const editUserForm = document.getElementById('adminEditUserForm');
+        if (editUserForm) {
+            editUserForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('editUserId').value;
+                const fullName = document.getElementById('editUserFullName').value;
+                const role = document.getElementById('editUserRole').value;
+                const isActive = document.getElementById('editUserIsActive').value === 'true';
+                
+                const btn = editUserForm.querySelector('button[type="submit"]');
+                if (btn) btn.disabled = true;
+
+                try {
+                    await UsersAPI.update(id, { fullName, role, isActive });
+                    
+                    const modal = document.getElementById('editUserModal');
+                    if (modal) modal.classList.remove('show-modal');
+                    alert('อัปเดตผู้ใช้งานสำเร็จ / User updated successfully');
+                    loadAdminUsers();
+                } catch (err) {
+                    alert(err.message || 'เกิดข้อผิดพลาด / Error updating user');
+                } finally {
+                    if (btn) btn.disabled = false;
+                }
+            });
+        }
 
         loadAdminUsers();
     }

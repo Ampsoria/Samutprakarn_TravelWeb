@@ -84,10 +84,11 @@ async function getUsers(req, res) {
 async function updateUser(req, res) {
   try {
     const id = parseInt(req.params.id);
-    const { role, isActive } = req.body;
+    const { role, isActive, fullName } = req.body;
     const data = {};
     if (role) data.role = role;
     if (isActive !== undefined) data.isActive = isActive;
+    if (fullName) data.fullName = fullName;
 
     const user = await prisma.user.update({ where: { id }, data });
     res.json({ message: 'อัปเดตผู้ใช้สำเร็จ', user: { id: user.id, role: user.role, isActive: user.isActive } });

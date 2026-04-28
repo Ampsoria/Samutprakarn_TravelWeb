@@ -137,6 +137,46 @@
                 </table>
             </div>
 
+            <div class="modal-overlay" id="editUserModal">
+                <div class="modal-box">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="h3">แก้ไขข้อมูลผู้ใช้งาน</h2>
+                        <button class="btn text-muted" style="padding:4px;"
+                            onclick="document.getElementById('editUserModal').classList.remove('show-modal')">✕</button>
+                    </div>
+                    <form id="adminEditUserForm">
+                        <input type="hidden" id="editUserId">
+                        <div class="input-group">
+                            <label class="input-label">ชื่อ - นามสกุล</label>
+                            <input type="text" class="input-field" id="editUserFullName" required>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">อีเมล (อ่านอย่างเดียว)</label>
+                            <input type="email" class="input-field" id="editUserEmail" readonly style="background-color: #f3f4f6;">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">บทบาท (Role)</label>
+                            <select class="input-field" id="editUserRole">
+                                <option value="user">ผู้ใช้งานทั่วไป (User)</option>
+                                <option value="admin">ผู้ดูแลระบบ (Admin)</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-4">
+                            <label class="input-label">สถานะบัญชี</label>
+                            <select class="input-field" id="editUserIsActive">
+                                <option value="true">ปกติ (Active)</option>
+                                <option value="false">ระงับการใช้งาน (Banned)</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end gap-2">
+                            <button type="button" class="btn btn-outline"
+                                onclick="document.getElementById('editUserModal').classList.remove('show-modal')">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </main>
     </div>
     <script src="js/api.js"></script>
