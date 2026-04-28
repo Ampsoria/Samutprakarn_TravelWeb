@@ -51,7 +51,13 @@ app.use('/api/stats', require('./routes/stats.routes'));
 
 // --- Serve Static Frontend Files ---
 // Serve from project root (where HTML files are)
-app.use(express.static(path.join(__dirname, '..')));
+app.use(express.static(path.join(__dirname, '..'), {
+  etag: false,
+  maxAge: 0,
+  setHeaders: (res, path) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  }
+}));
 
 // Fallback: serve home.html for root
 app.get('/', (req, res) => {
