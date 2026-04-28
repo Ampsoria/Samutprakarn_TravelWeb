@@ -1,17 +1,17 @@
 :root {
     /* === Premium Color Palette === */
-    --bg-color: #FAF9F6;
-    --bg-subtle: #F3F2EE;
-    --text-dark: #18181B;
-    --text-body: #3F3F46;
-    --text-muted: #71717A;
-    --text-light: #A1A1AA;
+    --bg-color: #F8FAFC; /* Slate 50 */
+    --bg-subtle: #F1F5F9; /* Slate 100 */
+    --text-dark: #0F172A; /* Slate 900 */
+    --text-body: #334155; /* Slate 700 */
+    --text-muted: #64748B; /* Slate 500 */
+    --text-light: #94A3B8; /* Slate 400 */
 
-    /* Orange Accent (warm, inviting) */
+    /* Orange Accent (vibrant, modern) */
     --primary-orange: #F97316;
     --primary-orange-hover: #EA580C;
     --primary-orange-light: #FFF7ED;
-    --primary-orange-glow: rgba(249, 115, 22, 0.25);
+    --primary-orange-glow: rgba(249, 115, 22, 0.3);
 
     /* Gradient Accents */
     --gradient-primary: linear-gradient(135deg, #F97316 0%, #FB923C 50%, #FDBA74 100%);

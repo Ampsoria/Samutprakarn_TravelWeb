@@ -31,17 +31,18 @@
     background: var(--gradient-primary);
     background-size: 200% 200%;
     color: white;
-    box-shadow: var(--shadow-orange);
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(249, 115, 22, 0.35);
-    filter: brightness(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(249, 115, 22, 0.6);
+    filter: brightness(1.1);
 }
 
 .btn-primary:active {
-    transform: translateY(0) scale(0.98);
+    transform: translateY(0) scale(0.96);
 }
 
 .btn-secondary {
@@ -199,17 +200,20 @@
 
 /* Place Cards */
 .place-card {
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    background: white;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--duration-normal) var(--ease-spring);
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s var(--ease-spring);
+    border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .place-card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(249, 115, 22, 0.15);
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(249, 115, 22, 0.3);
 }
 
 .place-card .place-img {
@@ -229,20 +233,23 @@
 
 /* Result Cards (Search) */
 .result-card {
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    background: white;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--duration-normal) var(--ease-spring);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s var(--ease-spring);
     text-decoration: none;
     color: inherit;
-    border: 1px solid var(--border-light);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     display: block;
 }
 
 .result-card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(249, 115, 22, 0.15);
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(249, 115, 22, 0.3);
 }
 
 .result-img {
