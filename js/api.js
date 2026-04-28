@@ -254,32 +254,3 @@ const StatsAPI = {
   },
 };
 
-// --- Reviews API ---
-const ReviewsAPI = {
-  async getByPlace(placeId) {
-    return apiFetch(`/places/${placeId}/reviews`);
-  },
-
-  async create(placeId, rating, comment) {
-    return apiFetch(`/places/${placeId}/reviews`, {
-      method: 'POST',
-      body: JSON.stringify({ rating, comment }),
-    });
-  },
-
-  async getAdminReviews(status) {
-    const query = status ? `?status=${status}` : '';
-    return apiFetch(`/admin/reviews${query}`);
-  },
-
-  async moderate(id, status) {
-    return apiFetch(`/admin/reviews/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ status }),
-    });
-  },
-
-  async delete(id) {
-    return apiFetch(`/admin/reviews/${id}`, { method: 'DELETE' });
-  },
-};
