@@ -115,9 +115,11 @@
         .hero-subtitle {
             font-size: 1.05rem;
             color: var(--text-muted);
-            line-height: 1.7;
+            line-height: 1.8;
             margin-bottom: 32px;
-            max-width: 420px;
+            max-width: 480px;
+            text-align: left;
+            letter-spacing: 0.01em;
         }
 
         /* Photo collage */
@@ -644,8 +646,8 @@
     <section class="hero-section animate-fade-in-up">
         <div class="hero-text">
             <p class="text-muted mb-2" style="font-size: 1.25rem; font-weight: 500;" data-i18n="home_hello"> 👋</p>
-            <h1>
-                Let's <span class="highlight" data-i18n="home_hero_explore">explore</span><br>
+            <h1 data-i18n="home_hero_title">
+                Let's <span class="highlight">explore</span><br>
                 <span class="highlight">สมุทรปราการ</span>
             </h1>
             <p class="hero-subtitle" data-i18n="home_hero_sub">
@@ -659,12 +661,12 @@
                     <span class="filter-label" data-i18n="filter_category">หมวดหมู่</span>
                     <div class="filter-value">
                         <select name="category">
-                            <option value="">ทั้งหมด</option>
-                            <option value="nature">🌳 ธรรมชาติ</option>
-                            <option value="temple">🛕 วัด</option>
-                            <option value="history">🏛️ ประวัติศาสตร์</option>
-                            <option value="art">🎨 ศิลปะ</option>
-                            <option value="food">🍽️ อาหาร</option>
+                            <option value="" data-i18n="filter_all">ทั้งหมด</option>
+                            <option value="nature" data-i18n="filter_nature">🌳 ธรรมชาติ</option>
+                            <option value="temple" data-i18n="filter_temple">🛕 วัด</option>
+                            <option value="history" data-i18n="filter_history">🏛️ ประวัติศาสตร์</option>
+                            <option value="art" data-i18n="filter_art">🎨 ศิลปะ</option>
+                            <option value="food" data-i18n="filter_food">🍽️ อาหาร</option>
                         </select>
                     </div>
                 </div>
@@ -672,12 +674,12 @@
                     <span class="filter-label" data-i18n="filter_district">อำเภอ</span>
                     <div class="filter-value">
                         <select name="amphoe">
-                            <option value="">ทุกอำเภอ</option>
-                            <option value="mueang">เมือง</option>
-                            <option value="bang_phli">บางพลี</option>
-                            <option value="phra_pradaeng">พระประแดง</option>
-                            <option value="phra_samut_chedi">พระสมุทรเจดีย์</option>
-                            <option value="bang_bo">บางบ่อ</option>
+                            <option value="" data-i18n="filter_all_district">ทุกอำเภอ</option>
+                            <option value="mueang" data-i18n="filter_mueang">เมือง</option>
+                            <option value="bang_phli" data-i18n="filter_bang_phli">บางพลี</option>
+                            <option value="phra_pradaeng" data-i18n="filter_phra_pradaeng">พระประแดง</option>
+                            <option value="phra_samut_chedi" data-i18n="filter_phra_samut_chedi">พระสมุทรเจดีย์</option>
+                            <option value="bang_bo" data-i18n="filter_bang_bo">บางบ่อ</option>
                         </select>
                     </div>
                 </div>
@@ -685,9 +687,9 @@
                     <span class="filter-label" data-i18n="filter_price">ราคา</span>
                     <div class="filter-value">
                         <select name="price">
-                            <option value="">ทุกราคา</option>
-                            <option value="free">ฟรี</option>
-                            <option value="paid">มีค่าเข้าชม</option>
+                            <option value="" data-i18n="filter_all_price">ทุกราคา</option>
+                            <option value="free" data-i18n="filter_free">ฟรี</option>
+                            <option value="paid" data-i18n="filter_paid">มีค่าเข้าชม</option>
                         </select>
                     </div>
                 </div>
@@ -741,12 +743,12 @@
         <div style="max-width: 1300px; margin: 0 auto;">
             <h2 class="mb-3" style="font-size: 1.8rem;" data-i18n="home_categories">สำรวจตามประเภท</h2>
             <div class="category-chips">
-                <a href="search.html?category=nature" class="category-chip">🌳 ธรรมชาติ</a>
-                <a href="search.html?category=temple" class="category-chip">🛕 วัดและธรรมะ</a>
-                <a href="search.html?category=history" class="category-chip">🏛️ ประวัติศาสตร์</a>
-                <a href="search.html?category=art" class="category-chip">🎨 ศิลปวัฒนธรรม</a>
-                <a href="search.html?category=food" class="category-chip">🍽️ อาหาร</a>
-                <a href="search.html?category=cafe" class="category-chip">☕ คาเฟ่</a>
+                <a href="search.html?category=nature" class="category-chip" data-i18n="filter_nature">🌳 ธรรมชาติ</a>
+                <a href="search.html?category=temple" class="category-chip" data-i18n="tag_temple">🛕 วัดและธรรมะ</a>
+                <a href="search.html?category=history" class="category-chip" data-i18n="filter_history">🏛️ ประวัติศาสตร์</a>
+                <a href="search.html?category=art" class="category-chip" data-i18n="filter_art">🎨 ศิลปวัฒนธรรม</a>
+                <a href="search.html?category=food" class="category-chip" data-i18n="filter_food">🍽️ อาหาร</a>
+                <a href="search.html?category=cafe" class="category-chip" data-i18n="tag_cafe">☕ คาเฟ่</a>
             </div>
         </div>
     </section>

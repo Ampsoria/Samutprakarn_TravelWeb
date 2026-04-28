@@ -72,11 +72,35 @@ const translations = {
         'tag_food': '🍽️ ร้านอาหารเด็ด',
         'home_hello': 'สวัสดี, นักเดินทาง! 👋',
         'home_hero': 'คุณอยากไปไหน<br>ใน<span style="color: var(--primary-orange);">สมุทรปราการ</span>วันนี้?',
+        'home_hero_title': 'Let\'s <span class="highlight">explore</span><br><span class="highlight">สมุทรปราการ</span>',
+        'home_hero_sub': 'ค้นพบสถานที่ท่องเที่ยว วัด ธรรมชาติ และวิถีชีวิตริมน้ำของสมุทรปราการ จังหวัดที่อยู่ใกล้กรุงเทพฯ แต่มีเสน่ห์ไม่เหมือนใคร',
         'home_search': 'ค้นหาสถานที่, อำเภอ, ประเภท...',
         'home_search_btn': 'ค้นหา',
         'home_recom': 'แนะนำสำหรับคุณ (สายเข้าวัด)',
-        'home_view_all': 'ดูทั้งหมด >',
+        'home_popular': 'สถานที่ยอดนิยม',
+        'home_view_all': 'ดูทั้งหมด ›',
         'home_trending': 'กำลังมาแรง 🔥',
+        'home_categories': 'สำรวจตามประเภท',
+        'home_all_places': 'สถานที่ทั้งหมด',
+        'home_filter_link': 'กรองผลลัพธ์ →',
+        'filter_category': 'หมวดหมู่',
+        'filter_district': 'อำเภอ',
+        'filter_price': 'ราคา',
+        'filter_all': 'ทั้งหมด',
+        'filter_all_district': 'ทุกอำเภอ',
+        'filter_all_price': 'ทุกราคา',
+        'filter_nature': '🌳 ธรรมชาติ',
+        'filter_temple': '🛕 วัด',
+        'filter_history': '🏛️ ประวัติศาสตร์',
+        'filter_art': '🎨 ศิลปะ',
+        'filter_food': '🍽️ อาหาร',
+        'filter_mueang': 'เมือง',
+        'filter_bang_phli': 'บางพลี',
+        'filter_phra_pradaeng': 'พระประแดง',
+        'filter_phra_samut_chedi': 'พระสมุทรเจดีย์',
+        'filter_bang_bo': 'บางบ่อ',
+        'filter_free': 'ฟรี',
+        'filter_paid': 'มีค่าเข้าชม',
         'badge_temple': 'วัดและธรรมะ',
         'badge_art': 'ศิลปวัฒนธรรม',
         'badge_history': 'สถานที่ประวัติศาสตร์',
@@ -198,11 +222,35 @@ const translations = {
         'tag_food': '🍽️ Great Food',
         'home_hello': 'Hello, Traveler! 👋',
         'home_hero': 'Where do you want to go<br>in <span style="color: var(--primary-orange);">Samut Prakan</span> today?',
+        'home_hero_title': 'Let\'s <span class="highlight">explore</span><br><span class="highlight">Samut Prakan</span>',
+        'home_hero_sub': 'Discover temples, nature, and the riverside lifestyle of Samut Prakan — a charming province just outside Bangkok with a unique character all its own.',
         'home_search': 'Search places, districts, categories...',
         'home_search_btn': 'Search',
         'home_recom': 'Recommended for You (Temple Lover)',
-        'home_view_all': 'View All >',
+        'home_popular': 'Popular Destinations',
+        'home_view_all': 'View All ›',
         'home_trending': 'Trending Now 🔥',
+        'home_categories': 'Browse by Category',
+        'home_all_places': 'All Places',
+        'home_filter_link': 'Filter Results →',
+        'filter_category': 'Category',
+        'filter_district': 'District',
+        'filter_price': 'Price',
+        'filter_all': 'All',
+        'filter_all_district': 'All Districts',
+        'filter_all_price': 'All Prices',
+        'filter_nature': '🌳 Nature',
+        'filter_temple': '🛕 Temple',
+        'filter_history': '🏛️ History',
+        'filter_art': '🎨 Art',
+        'filter_food': '🍽️ Food',
+        'filter_mueang': 'Mueang',
+        'filter_bang_phli': 'Bang Phli',
+        'filter_phra_pradaeng': 'Phra Pradaeng',
+        'filter_phra_samut_chedi': 'Phra Samut Chedi',
+        'filter_bang_bo': 'Bang Bo',
+        'filter_free': 'Free',
+        'filter_paid': 'Admission Fee',
         'badge_temple': 'Temple',
         'badge_art': 'Art & Culture',
         'badge_history': 'Historical Place',
@@ -308,13 +356,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to apply translations
     const applyTranslations = (lang) => {
+        const dict = translations[lang];
+        if (!dict) return;
         document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
-            if (translations[lang][key]) {
+            if (dict[key]) {
                 if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
-                    element.placeholder = translations[lang][key];
+                    element.placeholder = dict[key];
+                } else if (element.tagName === 'OPTION') {
+                    element.textContent = dict[key];
                 } else {
-                    element.innerHTML = translations[lang][key];
+                    element.innerHTML = dict[key];
                 }
             }
         });
@@ -1210,6 +1262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const homeTrendingGrid = document.getElementById('homeTrendingGrid');
 
     if (homeRecomScroll || homeTrendingGrid) {
+        const lang = localStorage.getItem('appLang') || 'th';
         let places = [];
         try {
             const data = await PlacesAPI.getAll();
@@ -1229,12 +1282,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (homeRecomScroll) {
             let html = '';
             places.slice(0, 8).forEach(p => {
-                const priceText = p.price === 0 ? 'ฟรี' : `฿ ${p.price}`;
+                const name = lang === 'en' ? (p.nameEn || p.nameTh) : p.nameTh;
+                const priceText = p.price === 0 ? (lang === 'en' ? 'Free' : 'ฟรี') : `฿ ${p.price}`;
                 html += `
                 <a href="detail.html?id=${p.id}" class="dest-card animate-fade-in-up" style="text-decoration:none; color:inherit;">
-                    <img src="${p.img}" class="dest-card-img" alt="${p.nameTh}" data-slug="${p.slug}"
+                    <img src="${p.img}" class="dest-card-img" alt="${name}" data-slug="${p.slug}"
                          onerror="handleImgError(this)">
-                    <h3 class="dest-card-name">${p.nameTh}</h3>
+                    <h3 class="dest-card-name">${name}</h3>
                     <div class="dest-card-meta">
                         <span class="dest-card-price">${priceText}</span>
                         <span style="color: var(--text-light);">•</span>
@@ -1272,16 +1326,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (homeAllPlacesGrid) {
             let allHtml = '';
             places.forEach(p => {
-                const priceText = p.price === 0 ? 'ฟรี' : `฿ ${p.price}`;
+                const name = lang === 'en' ? (p.nameEn || p.nameTh) : p.nameTh;
+                const priceText = p.price === 0 ? (lang === 'en' ? 'Free' : 'ฟรี') : `฿ ${p.price}`;
+                const distLabel = lang === 'en' ? '' : 'อ.';
                 allHtml += `
                 <a href="detail.html?id=${p.id}" class="dest-card animate-fade-in-up" style="text-decoration:none; color:inherit;">
-                    <img src="${p.img}" class="dest-card-img" alt="${p.nameTh}" data-slug="${p.slug}" style="height: 220px;"
+                    <img src="${p.img}" class="dest-card-img" alt="${name}" data-slug="${p.slug}" style="height: 220px;"
                          onerror="handleImgError(this)">
-                    <h3 class="dest-card-name">${p.nameTh}</h3>
+                    <h3 class="dest-card-name">${name}</h3>
                     <div class="dest-card-meta">
                         <span class="dest-card-price">${priceText}</span>
                         <span style="color: var(--text-light);">•</span>
-                        <span>อ.${p.amphoe}</span>
+                        <span>${distLabel}${p.amphoe}</span>
                         <span style="color: var(--text-light);">•</span>
                         <span class="dest-card-rating">
                             <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
