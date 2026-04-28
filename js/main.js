@@ -1163,6 +1163,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (place) {
             // Update UI Elements
+            document.title = `${place.nameTh} | Samut Prakan Travel`;
             document.getElementById('detailHeroImage').src = place.img;
             document.getElementById('detailHeroImage').alt = place.nameTh;
             document.getElementById('detailTitle').textContent = place.nameTh;
