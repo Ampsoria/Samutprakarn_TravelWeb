@@ -208,8 +208,15 @@
                 </div>
                 <div class="input-group">
                     <label class="input-label" data-i18n="auth_interest">เลือกสิ่งที่คุณสนใจ (เพื่อแนะนำสถานที่)</label>
-                    <input type="text" class="input-field" id="editTagsInput" placeholder="เช่น: ธรรมชาติ, คาเฟ่"
-                        required>
+                    <input type="hidden" id="editTagsInput">
+                    <div class="tags-container" id="editTagsContainer" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
+                        <button type="button" class="tag-btn" data-value="cafe">☕ คาเฟ่</button>
+                        <button type="button" class="tag-btn" data-value="temple">🛕 วัดและธรรมะ</button>
+                        <button type="button" class="tag-btn" data-value="nature">🌳 ธรรมชาติ</button>
+                        <button type="button" class="tag-btn" data-value="photo">📸 จุดถ่ายรูป</button>
+                        <button type="button" class="tag-btn" data-value="food">🍽️ ร้านอาหาร</button>
+                        <button type="button" class="tag-btn" data-value="history">🏛️ ประวัติศาสตร์</button>
+                    </div>
                 </div>
                 <div class="flex justify-end gap-2 mt-4">
                     <button type="button" class="btn btn-outline" onclick="closeEditProfile()">ยกเลิก</button>
@@ -222,56 +229,106 @@
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- สคริปต์สำหรับดึงและจัดการข้อมูลผู้ใช้งานแบบไดนามิก -->
+    <!-- สคริปต์สำหรับดึง Bookmarks จาก API และแสดงผล -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            let user = null;
-            
-            // 1. ลองดึงข้อมูลจาก AuthAPI ก่อน (อิงจากระบบที่คุณมี)
-            if (typeof AuthAPI !== 'undefined' && typeof AuthAPI.getCurrentUser === 'function') {
-                try { user = await AuthAPI.getCurrentUser(); } catch(e) { console.error(e); }
-            }
-            
-            // 2. ถ้าไม่มีใน AuthAPI ให้ลองดึงจาก localStorage (ระบบ Mock Login ส่วนใหญ่จะเก็บไว้ในนี้)
-            if (!user) {
-                const userStr = localStorage.getItem('user') || localStorage.getItem('currentUser');
-                if (userStr) {
-                    try { user = JSON.parse(userStr); } catch(e) { console.error(e); }
+            const lang = localStorage.getItem('appLang') || 'th';
+
+            // --- โหลดรายการ Bookmarks จาก API ---
+            async function loadProfileBookmarks() {
+                const listEl = document.getElementById('profileBookmarksList');
+                if (!listEl) return;
+
+                // ต้อง Login ก่อน
+                if (typeof AuthAPI === 'undefined' || !AuthAPI.isLoggedIn()) {
+                    listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:24px;">
+                        ${lang === 'en' ? 'Please login to see your bookmarks.' : 'กรุณาเข้าสู่ระบบเพื่อดูรายการโปรด'}
+                    </p>`;
+                    return;
+                }
+
+                listEl.innerHTML = '<p style="text-align:center; padding:24px; color:var(--text-muted);">กำลังโหลด...</p>';
+
+                try {
+                    const data = await BookmarksAPI.getAll();
+                    const bookmarks = data.bookmarks || [];
+
+                    if (bookmarks.length === 0) {
+                        listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:24px;">
+                            ${lang === 'en' ? 'No bookmarks yet. Browse places and tap ❤️ to save!' : 'ยังไม่มีรายการโปรด ลองกดบันทึก ❤️ สถานที่ที่คุณชอบดูนะ!'}
+                        </p>`;
+                        return;
+                    }
+
+                    let html = '';
+                    bookmarks.forEach(b => {
+                        const name = lang === 'en' ? (b.nameEn || b.nameTh) : b.nameTh;
+                        const imgSrc = b.img || 'https://placehold.co/120x120?text=No+Image';
+                        html += `
+                        <div class="list-card" id="bookmark-${b.placeId}">
+                            <img class="list-img" src="${imgSrc}" alt="${name}" onerror="this.src='https://placehold.co/120x120?text=No+Image'">
+                            <div class="list-body">
+                                <a href="detail.html?id=${b.placeId}" style="text-decoration:none; color:var(--text-dark);">
+                                    <h3 style="font-size:1rem; margin:0 0 4px;">${name}</h3>
+                                </a>
+                                <span class="badge text-small">${b.category || ''}</span>
+                                <p class="text-small text-muted" style="margin-top:4px;">${b.amphoe || ''}</p>
+                            </div>
+                            <button class="remove-btn" title="ลบออกจากรายการโปรด" onclick="removeProfileBookmark(${b.placeId})">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>`;
+                    });
+                    listEl.innerHTML = html;
+
+                    // อัปเดตจำนวน Bookmark ในสถิติ
+                    const statItems = document.querySelectorAll('.profile-stats .h3');
+                    if (statItems.length >= 2) {
+                        statItems[1].textContent = bookmarks.length;
+                    }
+                } catch (err) {
+                    console.error('Failed to load bookmarks:', err);
+                    listEl.innerHTML = `<p style="text-align:center; color:#EF4444; padding:24px;">
+                        ${lang === 'en' ? 'Failed to load bookmarks.' : 'ไม่สามารถโหลดรายการโปรดได้'}
+                    </p>`;
                 }
             }
 
-            // 3. นำข้อมูลผู้ใช้มาแสดงบนหน้า UI
-            if (user) {
-                // หากไม่มี name ให้ลองหาจากตัวแปรอื่น เช่น firstname หรือ username
-                const name = user.name || user.firstname || user.username || 'ผู้ใช้งาน';
-                document.getElementById('displayName').textContent = name;
-                document.getElementById('displayAvatar').textContent = name.charAt(0); // ใช้อักษรตัวแรก
-                
-                const tags = user.interests || user.tags || ['นักเดินทาง'];
-                document.getElementById('displayTags').innerHTML = tags.map(tag => `<span data-i18n="badge_${tag}">${tag}</span>`).join(' • ');
+            // --- ลบ Bookmark ---
+            window.removeProfileBookmark = async (placeId) => {
+                const confirmMsg = lang === 'en' ? 'Remove this from bookmarks?' : 'ลบออกจากรายการโปรดหรือไม่?';
+                if (!confirm(confirmMsg)) return;
+                try {
+                    await BookmarksAPI.remove(placeId);
+                    const card = document.getElementById('bookmark-' + placeId);
+                    if (card) {
+                        card.style.transition = 'opacity 0.3s, transform 0.3s';
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateX(20px)';
+                        setTimeout(() => {
+                            card.remove();
+                            // เช็คว่ายังเหลือ bookmark ไหม
+                            const listEl = document.getElementById('profileBookmarksList');
+                            if (listEl && listEl.children.length === 0) {
+                                listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:24px;">
+                                    ${lang === 'en' ? 'No bookmarks yet.' : 'ยังไม่มีรายการโปรด'}
+                                </p>`;
+                            }
+                            // อัปเดตจำนวน
+                            const statItems = document.querySelectorAll('.profile-stats .h3');
+                            if (statItems.length >= 2) {
+                                statItems[1].textContent = document.querySelectorAll('.list-card').length;
+                            }
+                        }, 300);
+                    }
+                } catch (err) {
+                    alert(err.message || 'Error removing bookmark');
+                }
+            };
 
-                // ใส่ข้อมูลเดิมลงในฟอร์มแก้ไข
-                document.getElementById('editNameInput').value = name;
-                document.getElementById('editTagsInput').value = tags.join(', ');
-            }
-
-            // 4. จัดการการบันทึกฟอร์มแก้ไขโปรไฟล์
-            const editProfileForm = document.getElementById('editProfileForm');
-            if (editProfileForm) {
-                editProfileForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const newName = document.getElementById('editNameInput').value;
-                    const newTags = document.getElementById('editTagsInput').value.split(',').map(t => t.trim()).filter(t => t);
-                    
-                    // อัปเดตหน้า UI ทันที
-                    document.getElementById('displayName').textContent = newName;
-                    document.getElementById('displayAvatar').textContent = newName.charAt(0);
-                    document.getElementById('displayTags').innerHTML = newTags.map(t => `<span>${t}</span>`).join(' • ');
-                    
-                    // สั่งปิด Modal ด้วยฟังก์ชันที่มีอยู่เดิมใน js/main.js
-                    if (typeof closeEditProfile === 'function') closeEditProfile();
-                });
-            }
+            loadProfileBookmarks();
         });
     </script>
 </body>

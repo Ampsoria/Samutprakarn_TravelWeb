@@ -151,30 +151,38 @@
             <aside class="filter-sidebar">
                 <div class="filter-group">
                     <div class="filter-title" data-i18n="filter_category">หมวดหมู่</div>
-                    <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="nature" checked>
-                        <span>ธรรมชาติ</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="nature">
+                        <span>🌳 ธรรมชาติ</span></label>
                     <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="temple">
-                        <span>วัด/สถานที่ศักดิ์สิทธิ์</span></label>
-                    <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="cafe">
-                        <span>คาเฟ่/ร้านอาหาร</span></label>
+                        <span>🛕 วัด/สถานที่ศักดิ์สิทธิ์</span></label>
                     <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="history">
-                        <span>ประวัติศาสตร์</span></label>
+                        <span>🏛️ ประวัติศาสตร์</span></label>
                     <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="art">
-                        <span>ศิลปวัฒนธรรม</span></label>
+                        <span>🎨 ศิลปวัฒนธรรม</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="food">
+                        <span>🍽️ อาหาร/ตลาด</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="cat-filter" value="cafe">
+                        <span>☕ คาเฟ่</span></label>
                 </div>
 
                 <div class="filter-group">
                     <div class="filter-title" data-i18n="filter_amphoe">อำเภอ</div>
-                    <label class="checkbox-group"><input type="checkbox" checked> <span>เมือง (18)</span></label>
-                    <label class="checkbox-group"><input type="checkbox"> <span>บางพลี (5)</span></label>
-                    <label class="checkbox-group"><input type="checkbox"> <span>พระประแดง (22)</span></label>
-                    <label class="checkbox-group"><input type="checkbox"> <span>บางบ่อ (2)</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="amphoe-filter" value="mueang">
+                        <span>เมืองสมุทรปราการ</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="amphoe-filter" value="bang_phli">
+                        <span>บางพลี</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="amphoe-filter" value="phra_pradaeng">
+                        <span>พระประแดง</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="amphoe-filter" value="phra_samut_chedi">
+                        <span>พระสมุทรเจดีย์</span></label>
+                    <label class="checkbox-group"><input type="checkbox" class="amphoe-filter" value="bang_bo">
+                        <span>บางบ่อ</span></label>
                 </div>
 
                 <div class="filter-group" style="margin-bottom:0;">
-                    <button class="btn btn-primary btn-full" data-i18n="filter_apply">ใช้การตั้งค่า</button>
+                    <button class="btn btn-primary btn-full" data-i18n="filter_apply" onclick="if(typeof renderResults==='function')renderResults()">ใช้การตั้งค่า</button>
                     <button class="btn btn-full" style="color:var(--text-muted); margin-top:8px;"
-                        data-i18n="filter_clear">ล้างตัวกรอง</button>
+                        data-i18n="filter_clear" onclick="document.querySelectorAll('.cat-filter,.amphoe-filter').forEach(c=>c.checked=false);if(typeof renderResults==='function')renderResults()">ล้างตัวกรอง</button>
                 </div>
             </aside>
 

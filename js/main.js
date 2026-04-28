@@ -655,10 +655,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch(err) { return; }
             }
             document.getElementById('editNameInput').value = currentProfileData.fullName || '';
-            document.getElementById('editTagsInput').value = currentProfileData.interests || '';
+
+            // Set tag buttons active based on saved interests
+            const savedInterests = (currentProfileData.interests || '').split(',').map(t => t.trim().toLowerCase()).filter(t => t);
+            const tagBtns = document.querySelectorAll('#editTagsContainer .tag-btn');
+            tagBtns.forEach(btn => {
+                const val = btn.getAttribute('data-value');
+                if (savedInterests.includes(val)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
             modal.style.display = 'flex';
         }
     };
+
+    // Tag button toggle in edit profile modal
+    const editTagsContainer = document.getElementById('editTagsContainer');
+    if (editTagsContainer) {
+        editTagsContainer.querySelectorAll('.tag-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                btn.classList.toggle('active');
+            });
+        });
+    }
 
     window.closeEditProfile = () => {
         const modal = document.getElementById('editProfileModal');
@@ -670,7 +693,14 @@ document.addEventListener('DOMContentLoaded', () => {
         editProfileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const newName = document.getElementById('editNameInput').value;
-            const newTags = document.getElementById('editTagsInput').value;
+
+            // Collect selected tags from active buttons
+            const selectedTags = [];
+            document.querySelectorAll('#editTagsContainer .tag-btn.active').forEach(btn => {
+                selectedTags.push(btn.getAttribute('data-value'));
+            });
+            const newTags = selectedTags.join(',');
+
             const btn = editProfileForm.querySelector('button[type="submit"]');
             if (btn) btn.disabled = true;
 
@@ -1116,10 +1146,18 @@ document.addEventListener('DOMContentLoaded', () => {
             searchInput.value = qParam;
         }
 
-        // Pre-check category filter checkboxes if URL has category param
+        // Pre-check category filter checkboxes based on URL param
         if (catParam) {
             catFilters.forEach(cb => {
                 if (cb.value === catParam) cb.checked = true;
+            });
+        }
+
+        // Pre-check amphoe filter checkboxes based on URL param
+        const amphoeFilters = document.querySelectorAll('.amphoe-filter');
+        if (amphoeParam) {
+            amphoeFilters.forEach(cb => {
+                if (cb.value === amphoeParam) cb.checked = true;
             });
         }
 
@@ -1135,22 +1173,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 .filter(cb => cb.checked)
                 .map(cb => cb.value);
 
-            // Also apply URL category param if no checkboxes are active
-            const effectiveCats = activeCats.length > 0 ? activeCats : (catParam ? [catParam] : []);
+            // Get active amphoe filters (from checkboxes)
+            const activeAmphoes = Array.from(document.querySelectorAll('.amphoe-filter'))
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
 
             // Get search query
             const query = (searchInput ? searchInput.value.toLowerCase() : '');
 
+            // Get price filter from URL (if present)
+            const currentPrice = priceParam || '';
+
             // Filter logic
             const filtered = places.filter(p => {
-                const matchCat = effectiveCats.length === 0 || effectiveCats.includes(p.category);
+                const matchCat = activeCats.length === 0 || activeCats.includes(p.category);
                 const matchQuery = !query ||
                     (p.nameTh && p.nameTh.toLowerCase().includes(query)) ||
                     (p.nameEn && p.nameEn.toLowerCase().includes(query));
-                const matchAmphoe = !amphoeParam || p.amphoe === amphoeParam;
-                const matchPrice = !priceParam ||
-                    (priceParam === 'free' && p.price === 0) ||
-                    (priceParam === 'paid' && p.price > 0);
+                const matchAmphoe = activeAmphoes.length === 0 || activeAmphoes.includes(p.amphoe);
+                const matchPrice = !currentPrice ||
+                    (currentPrice === 'free' && p.price === 0) ||
+                    (currentPrice === 'paid' && p.price > 0);
                 return matchCat && matchQuery && matchAmphoe && matchPrice;
             });
 
@@ -1188,6 +1231,9 @@ document.addEventListener('DOMContentLoaded', () => {
             searchResultsGrid.innerHTML = html;
         };
 
+        // Expose renderResults globally for inline onclick handlers
+        window.renderResults = renderResults;
+
         // Event listeners
         if (searchInput) {
             searchInput.addEventListener('input', renderResults);
@@ -1195,18 +1241,22 @@ document.addEventListener('DOMContentLoaded', () => {
         catFilters.forEach(cb => {
             cb.addEventListener('change', renderResults);
         });
+        document.querySelectorAll('.amphoe-filter').forEach(cb => {
+            cb.addEventListener('change', renderResults);
+        });
 
-        // Clear filter button (optional robust handler)
+        // Clear filter button
         const clearBtn = document.querySelector('button[data-i18n="filter_clear"]');
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
                 catFilters.forEach(cb => cb.checked = false);
+                document.querySelectorAll('.amphoe-filter').forEach(cb => cb.checked = false);
                 if (searchInput) searchInput.value = '';
                 renderResults();
             });
         }
 
-        // Apply filters button (mobile standard)
+        // Apply filters button
         const applyBtn = document.querySelector('button[data-i18n="filter_apply"]');
         if (applyBtn) {
             applyBtn.addEventListener('click', renderResults);

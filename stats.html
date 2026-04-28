@@ -83,44 +83,8 @@
 
         <h2 class="h3 mb-3" data-i18n="stats_top5">5 อันดับ ประเภทสถานที่ยอดฮิต</h2>
 
-        <div class="card">
-            <div class="stat-rank-item">
-                <div class="rank-number">1</div>
-                <div class="rank-info">
-                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_nature">ธรรมชาติ & ตากอากาศ</h4>
-                    <div class="text-small text-muted">ผู้เข้าชมกว่า 45,000 ครั้ง</div>
-                </div>
-                <div class="badge">🔥 ฮิตมาก</div>
-            </div>
-            <div class="stat-rank-item">
-                <div class="rank-number">2</div>
-                <div class="rank-info">
-                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_cafe">คาเฟ่ & ร้านอาหาร</h4>
-                    <div class="text-small text-muted">ผู้เข้าชมกว่า 38,200 ครั้ง</div>
-                </div>
-            </div>
-            <div class="stat-rank-item">
-                <div class="rank-number">3</div>
-                <div class="rank-info">
-                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_temple">วัด & สถานที่ศักดิ์สิทธิ์
-                    </h4>
-                    <div class="text-small text-muted">ผู้เข้าชมกว่า 29,500 ครั้ง</div>
-                </div>
-            </div>
-            <div class="stat-rank-item">
-                <div class="rank-number">4</div>
-                <div class="rank-info">
-                    <h4 style="font-size:1rem; margin-bottom:4px;">พิพิธภัณฑ์</h4>
-                    <div class="text-small text-muted">ผู้เข้าชมกว่า 15,400 ครั้ง</div>
-                </div>
-            </div>
-            <div class="stat-rank-item">
-                <div class="rank-number">5</div>
-                <div class="rank-info">
-                    <h4 style="font-size:1rem; margin-bottom:4px;" data-i18n="badge_shopping">ตลาดน้ำ & ช้อปปิ้ง</h4>
-                    <div class="text-small text-muted">ผู้เข้าชมกว่า 12,100 ครั้ง</div>
-                </div>
-            </div>
+        <div class="card" id="statsRankingList">
+            <p style="text-align:center; padding:24px; color:var(--text-muted);">กำลังโหลดข้อมูล...</p>
         </div>
 
     </main>
@@ -161,40 +125,102 @@
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- Chart Config -->
+    <!-- Chart & Ranking — ดึงข้อมูลจริงจาก API -->
     <script>
-        const ctx = document.getElementById('trendChart').getContext('2d');
-        const trendChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.'],
-                datasets: [{
-                    label: 'จำนวนผู้มาเยือนสมุทรปราการ',
-                    data: [12000, 19000, 15000, 25000, 18000, 22000],
-                    borderColor: '#F97316',
-                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: '#EA580C'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: '#F3F4F6' }
+        const lang = localStorage.getItem('appLang') || 'th';
+
+        const categoryLabels = {
+            nature: { th: '🌳 ธรรมชาติ', en: '🌳 Nature' },
+            temple: { th: '🛕 วัดและธรรมะ', en: '🛕 Temple' },
+            history: { th: '🏛️ ประวัติศาสตร์', en: '🏛️ History' },
+            art: { th: '🎨 ศิลปวัฒนธรรม', en: '🎨 Art & Culture' },
+            food: { th: '🍽️ อาหาร/ตลาด', en: '🍽️ Food/Market' },
+            cafe: { th: '☕ คาเฟ่', en: '☕ Cafe' },
+        };
+
+        function getCatLabel(cat) {
+            return (categoryLabels[cat] || {})[lang] || cat;
+        }
+
+        async function loadStats() {
+            try {
+                const data = await StatsAPI.getCategories();
+                const categories = data.categories || [];
+
+                // --- กราฟ ---
+                const labels = categories.map(c => getCatLabel(c.category));
+                const values = categories.map(c => c.totalViews);
+                const colors = ['#F97316', '#3B82F6', '#10B981', '#8B5CF6', '#EC4899', '#F59E0B'];
+
+                const ctx = document.getElementById('trendChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: lang === 'en' ? 'Total Views' : 'จำนวนการเข้าชม',
+                            data: values,
+                            backgroundColor: colors.slice(0, labels.length),
+                            borderRadius: 8,
+                            borderSkipped: false,
+                        }]
                     },
-                    x: {
-                        grid: { display: false }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: '#F3F4F6' },
+                                ticks: { font: { family: 'Prompt' } }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { family: 'Prompt' } }
+                            }
+                        }
                     }
+                });
+
+                // --- อันดับ Top 5 ---
+                const rankingEl = document.getElementById('statsRankingList');
+                if (categories.length === 0) {
+                    rankingEl.innerHTML = `<p style="text-align:center; padding:24px; color:var(--text-muted);">
+                        ${lang === 'en' ? 'No data available yet.' : 'ยังไม่มีข้อมูลสถิติ'}
+                    </p>`;
+                    return;
                 }
+
+                const top5 = categories.slice(0, 5);
+                let html = '';
+                top5.forEach((c, i) => {
+                    const viewsText = lang === 'en'
+                        ? `${c.totalViews.toLocaleString()} views • ${c.placeCount} places`
+                        : `เข้าชม ${c.totalViews.toLocaleString()} ครั้ง • ${c.placeCount} สถานที่`;
+                    html += `
+                    <div class="stat-rank-item">
+                        <div class="rank-number">${i + 1}</div>
+                        <div class="rank-info">
+                            <h4 style="font-size:1rem; margin-bottom:4px;">${getCatLabel(c.category)}</h4>
+                            <div class="text-small text-muted">${viewsText}</div>
+                        </div>
+                        ${i === 0 ? '<div class="badge">🔥 ' + (lang === 'en' ? 'Top' : 'ฮิตมาก') + '</div>' : ''}
+                    </div>`;
+                });
+                rankingEl.innerHTML = html;
+
+            } catch (err) {
+                console.error('Failed to load stats:', err);
+                document.getElementById('statsRankingList').innerHTML = `<p style="text-align:center; color:#EF4444; padding:24px;">
+                    ${lang === 'en' ? 'Failed to load stats.' : 'ไม่สามารถโหลดข้อมูลสถิติได้'}
+                </p>`;
             }
-        });
+        }
+
+        loadStats();
     </script>
 </body>
 
