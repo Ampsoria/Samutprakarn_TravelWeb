@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server/index.js",
     "start": "node server/index.js",
-    "build": "node scripts/prepare-deploy.js && npx prisma generate && npm run db:seed",
+    "build": "node scripts/prepare-deploy.js && npx prisma generate",
     "postinstall": "npx prisma generate",
     "db:migrate": "npx prisma migrate dev",
     "db:seed": "node prisma/seed.js",
