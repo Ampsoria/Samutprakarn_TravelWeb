@@ -1397,11 +1397,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const name = lang === 'en' ? (p.nameEn || p.nameTh) : p.nameTh;
                 const priceText = p.price === 0 ? (lang === 'en' ? 'Free' : 'ฟรี') : `฿ ${p.price}`;
                 const distLabel = lang === 'en' ? '' : 'อ.';
+                const desc = lang === 'en' ? (p.descriptionEn || '') : (p.descriptionTh || '');
                 allHtml += `
                 <a href="detail.html?id=${p.id}" class="dest-card animate-fade-in-up" style="text-decoration:none; color:inherit;">
                     <img src="${p.img}" class="dest-card-img" alt="${name}" data-slug="${p.slug}" style="height: 220px;"
                          onerror="handleImgError(this)">
                     <h3 class="dest-card-name">${name}</h3>
+                    <p class="text-small text-muted mb-2" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;">${desc}</p>
                     <div class="dest-card-meta">
                         <span class="dest-card-price">${priceText}</span>
                         <span style="color: var(--text-light);">•</span>
@@ -1471,7 +1473,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
 
             const lang = localStorage.getItem('appLang') || 'th';
-            const descText = lang === 'en' ? (place.descEn || place.nameEn) : (place.descTh || place.nameTh);
+            const descText = lang === 'en' ? (place.descriptionEn || place.nameEn) : (place.descriptionTh || place.nameTh);
             document.getElementById('detailDesc').textContent = descText;
 
             // Google Maps button
