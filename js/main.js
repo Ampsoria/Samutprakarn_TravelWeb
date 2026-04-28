@@ -715,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="text-small text-muted">อำเภอ: ${p.amphoe} • ID: ${p.id}</p>
                     </div>
                     <div class="place-actions">
-                        <button class="btn btn-outline" style="padding: 6px 16px;">แก้ไข</button>
+                        <button class="btn btn-outline" style="padding: 6px 16px;" onclick="openEditPlaceModal(${p.id})">แก้ไข</button>
                         <button class="btn" style="padding: 6px 16px; background:#FEE2E2; color:#DC2626;" onclick="deleteAdminPlace(${p.id})">ลบ</button>
                     </div>
                 </div>`;
@@ -731,6 +731,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (err) {
                     alert(err.message || 'Error deleting place');
                 }
+            }
+        };
+
+        window.openEditPlaceModal = async (id) => {
+            try {
+                let places = [];
+                try {
+                    const res = await PlacesAPI.getAll();
+                    places = res.places || [];
+                } catch (e) {
+                    places = [];
+                }
+                const place = places.find(p => p.id === id);
+                if (!place) throw new Error('Place not found');
+
+                document.getElementById('editPlaceId').value = place.id;
+                document.getElementById('editPlaceName').value = place.nameTh;
+                document.getElementById('editPlaceCategory').value = place.category || 'nature';
+                document.getElementById('editPlaceAmphoe').value = place.amphoe || 'mueang';
+                document.getElementById('editPlaceDesc').value = place.descriptionTh || '';
+                
+                document.getElementById('editModal').classList.add('show-modal');
+            } catch (err) {
+                alert(err.message || 'Error loading place data');
             }
         };
 
@@ -783,6 +807,63 @@ document.addEventListener('DOMContentLoaded', () => {
                     addPlaceForm.reset();
                 } catch (err) {
                     alert(err.message || 'เกิดข้อผิดพลาด / Error adding place');
+                } finally {
+                    if (btn) btn.disabled = false;
+                }
+            });
+        }
+
+        const editPlaceForm = document.getElementById('adminEditPlaceForm');
+        if (editPlaceForm) {
+            editPlaceForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('editPlaceId').value;
+                const name = document.getElementById('editPlaceName').value;
+                const category = document.getElementById('editPlaceCategory').value;
+                const amphoe = document.getElementById('editPlaceAmphoe').value;
+                const description = document.getElementById('editPlaceDesc').value;
+                
+                const fileInput = document.getElementById('editPlaceImageFile');
+                let imageUrl = undefined; // undefined means don't update image
+                
+                const btn = editPlaceForm.querySelector('button[type="submit"]');
+                if (btn) btn.disabled = true;
+
+                try {
+                    if (fileInput && fileInput.files && fileInput.files[0]) {
+                        const file = fileInput.files[0];
+                        if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                            throw new Error('ขนาดไฟล์เกิน 2MB กรุณาเลือกไฟล์ที่เล็กกว่านี้');
+                        }
+                        imageUrl = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => resolve(e.target.result);
+                            reader.onerror = () => reject(new Error("ไม่สามารถอ่านไฟล์ได้"));
+                            reader.readAsDataURL(file);
+                        });
+                    }
+
+                    const updateData = {
+                        nameTh: name,
+                        nameEn: name,
+                        category,
+                        amphoe,
+                        descriptionTh: description,
+                        descriptionEn: description
+                    };
+                    if (imageUrl) {
+                        updateData.imageUrl = imageUrl;
+                    }
+
+                    await PlacesAPI.update(id, updateData);
+                    
+                    const modal = document.getElementById('editModal');
+                    if (modal) modal.classList.remove('show-modal');
+                    alert('แก้ไขสถานที่สำเร็จ / Place updated successfully');
+                    loadAdminPlaces();
+                    editPlaceForm.reset();
+                } catch (err) {
+                    alert(err.message || 'เกิดข้อผิดพลาด / Error updating place');
                 } finally {
                     if (btn) btn.disabled = false;
                 }

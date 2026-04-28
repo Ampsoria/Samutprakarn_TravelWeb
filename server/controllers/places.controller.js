@@ -167,10 +167,36 @@ async function createPlace(req, res) {
 async function updatePlace(req, res) {
   try {
     const id = parseInt(req.params.id);
+    const { imageUrl, ...placeData } = req.body;
+    
     const place = await prisma.place.update({
       where: { id },
-      data: req.body,
+      data: placeData,
     });
+
+    if (imageUrl) {
+      // Check if cover image exists
+      const existingImage = await prisma.placeImage.findFirst({
+        where: { placeId: id, isCover: true }
+      });
+
+      if (existingImage) {
+        await prisma.placeImage.update({
+          where: { id: existingImage.id },
+          data: { imageUrl }
+        });
+      } else {
+        await prisma.placeImage.create({
+          data: {
+            placeId: id,
+            imageUrl,
+            altText: placeData.nameTh || place.nameTh,
+            isCover: true,
+          }
+        });
+      }
+    }
+
     res.json({ message: 'อัปเดตสถานที่สำเร็จ', place });
   } catch (err) {
     console.error('Update place error:', err);

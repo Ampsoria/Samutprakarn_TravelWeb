@@ -211,6 +211,62 @@
             </form>
         </div>
     </div>
+
+    <!-- Edit Modal Form -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-box">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="h3">แก้ไขสถานที่</h2>
+                <button class="btn text-muted" style="padding:4px;"
+                    onclick="document.getElementById('editModal').classList.remove('show-modal')">✕</button>
+            </div>
+            <form id="adminEditPlaceForm">
+                <input type="hidden" id="editPlaceId">
+                <div class="input-group">
+                    <label class="input-label">ชื่อสถานที่</label>
+                    <input type="text" class="input-field" id="editPlaceName" required>
+                </div>
+                <div class="grid-cols-2">
+                    <div class="input-group">
+                        <label class="input-label">หมวดหมู่</label>
+                        <select class="input-field" id="editPlaceCategory">
+                            <option value="temple">วัด/สถานที่ศักดิ์สิทธิ์</option>
+                            <option value="nature">ธรรมชาติ</option>
+                            <option value="cafe">คาเฟ่/ร้านอาหาร</option>
+                            <option value="history">ประวัติศาสตร์</option>
+                            <option value="art">ศิลปวัฒนธรรม</option>
+                            <option value="food">ร้านอาหาร</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">อำเภอ</label>
+                        <select class="input-field" id="editPlaceAmphoe">
+                            <option value="mueang">เมืองสมุทรปราการ</option>
+                            <option value="bang_phli">บางพลี</option>
+                            <option value="phra_pradaeng">พระประแดง</option>
+                            <option value="bang_bo">บางบ่อ</option>
+                            <option value="bang_sao_thong">บางเสาธง</option>
+                            <option value="phra_samut_chedi">พระสมุทรเจดีย์</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">รายละเอียด</label>
+                    <textarea class="input-field" rows="4" id="editPlaceDesc"></textarea>
+                </div>
+                <div class="input-group mb-4">
+                    <label class="input-label">อัปโหลดรูปภาพใหม่ (ถ้าต้องการเปลี่ยน)</label>
+                    <input type="file" class="input-field" id="editPlaceImageFile" accept="image/png, image/jpeg, image/webp" style="padding: 8px;">
+                    <small class="text-muted mt-1" style="display:block;">* ปล่อยว่างไว้หากไม่ต้องการเปลี่ยนรูป</small>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" class="btn btn-outline"
+                        onclick="document.getElementById('editModal').classList.remove('show-modal')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกการแก้ไข</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 
