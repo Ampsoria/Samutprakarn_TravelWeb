@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet({
   contentSecurityPolicy: false, // Allow inline scripts for existing frontend
   crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: false, // Allow loading external images
 }));
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
