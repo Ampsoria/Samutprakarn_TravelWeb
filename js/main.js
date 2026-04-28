@@ -745,6 +745,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const amphoeElement = inputs[2]; // select
                 const amphoe = amphoeElement ? amphoeElement.value || 'mueang' : 'mueang';
                 const description = inputs[3] ? inputs[3].value : '';
+                const imageUrl = document.getElementById('adminPlaceImageUrl')?.value || '';
                 const btn = addPlaceForm.querySelector('button[type="submit"]');
                 if (btn) btn.disabled = true;
 
@@ -757,6 +758,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         descriptionTh: description,
                         descriptionEn: description,
                         price: 0,
+                        imageUrl: imageUrl,
                     });
                     const modal = document.getElementById('addModal');
                     if (modal) modal.classList.remove('show-modal');
