@@ -15,9 +15,66 @@
     <style>
         .hero-banner {
             width: 100%;
-            height: 400px;
+            height: 350px;
+            max-height: 50vh;
             object-fit: cover;
             position: relative;
+            cursor: pointer;
+            transition: filter 0.3s ease;
+        }
+        .hero-banner:hover {
+            filter: brightness(0.9);
+        }
+
+        /* Lightbox Modal Styles */
+        .image-lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .image-lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            object-fit: contain;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .image-lightbox.active .lightbox-img {
+            transform: scale(1);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: 300;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+            z-index: 1001;
+            padding: 10px;
+            line-height: 1;
+        }
+        .lightbox-close:hover {
+            color: var(--primary-orange);
         }
 
         .back-btn-overlay {
@@ -102,9 +159,15 @@
 
 <body class="user-layout">
 
+    <!-- Lightbox Modal -->
+    <div id="imageLightbox" class="image-lightbox" onclick="this.classList.remove('active')">
+        <button class="lightbox-close">&times;</button>
+        <img id="lightboxImage" src="" class="lightbox-img" alt="Full screen image" onclick="event.stopPropagation()">
+    </div>
+
     <!-- Navigation with Back Button & Language Switch -->
     <div style="position:relative;">
-        <img id="detailHeroImage" src="" class="hero-banner" alt="Place Image" style="background-color: #E5E7EB;">
+        <img id="detailHeroImage" src="" class="hero-banner" alt="Place Image" style="background-color: #E5E7EB;" onclick="document.getElementById('imageLightbox').classList.add('active'); document.getElementById('lightboxImage').src = this.src;">
 
         <div class="flex justify-between w-full"
             style="position:absolute; top:var(--spacing-3); padding: 0 var(--spacing-3); z-index:20;">
