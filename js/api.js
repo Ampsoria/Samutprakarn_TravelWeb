@@ -156,7 +156,7 @@ const PlacesAPI = {
 
 // --- Reviews API ---
 const ReviewsAPI = {
-  async getForPlace(placeId) {
+  async getByPlace(placeId) {
     return apiFetch(`/places/${placeId}/reviews`);
   },
 
