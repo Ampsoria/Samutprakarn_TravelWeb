@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการสถานที่ | Admin</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .place-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            background: white;
+            padding: var(--spacing-2);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .place-item:last-child {
+            border-bottom: none;
+        }
+
+        .place-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            background: #E5E7EB;
+        }
+
+        .place-item-info {
+            flex: 1;
+        }
+
+        .place-actions {
+            display: flex;
+            gap: var(--spacing-2);
+        }
+
+        /* Modal Overlay (Simulated) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 600px;
+            padding: var(--spacing-4);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Utility specific */
+        .show-modal {
+            display: flex !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="nav-logo" style="justify-content:center;">
+                    <span style="color:var(--primary-orange);">Admin</span>Panel
+                </a>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="admin-dash.html" class="sidebar-link">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    <span data-i18n="admin_nav_dash">ภาพรวม (Dashboard)</span>
+                </a>
+                <a href="admin-users.html" class="sidebar-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <span data-i18n="admin_nav_users">จัดการผู้ใช้งาน</span>
+                </a>
+                <a href="admin-places.html" class="sidebar-link active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span data-i18n="admin_nav_places">จัดการสถานที่</span>
+                </a>
+                <a href="admin-reviews.html" class="sidebar-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                        </path>
+                    </svg>
+                    <span data-i18n="admin_nav_reviews">ตรวจสอบรีวิว</span>
+                </a>
+            </nav>
+            <div style="padding:var(--spacing-3);">
+                <div class="lang-switch mb-3" style="justify-content:center;">
+                    <button class="lang-btn active" data-lang="th">TH</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
+        <a href="login.html" class="btn btn-outline btn-full text-small" data-i18n="admin_logout">ออกจากระบบ</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="h2" data-i18n="admin_places_title">จัดการสถานที่</h1>
+                <button class="btn btn-primary" data-i18n="admin_places_add"
+                    onclick="document.getElementById('addModal').classList.add('show-modal')">+
+                    เพิ่มสถานที่ใหม่</button>
+            </div>
+
+            <!-- Header Filter -->
+            <div class="flex gap-2 mb-3">
+                <input class="input-field" style="max-width:300px; background:white;" data-i18n="admin_places_search"
+                    placeholder="พิมพ์ชื่อเพื่อค้นหา...">
+                <select class="input-field" style="max-width:200px; background:white;">
+                    <option data-i18n="admin_places_filter_all">ทั้งหมด (หมวดหมู่)</option>
+                    <option data-i18n="badge_nature">ธรรมชาติ</option>
+                    <option data-i18n="badge_cafe">คาเฟ่</option>
+                </select>
+            </div>
+
+            <div class="card" style="padding:0;" id="adminPlacesList">
+                <!-- Data rendered by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form (Add/Edit) -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-box">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="h3" data-i18n="admin_places_modal_title">เพิ่มสถานที่ใหม่</h2>
+                <button class="btn text-muted" style="padding:4px;"
+                    onclick="document.getElementById('addModal').classList.remove('show-modal')">✕</button>
+            </div>
+
+            <form id="adminAddPlaceForm">
+                <div class="input-group">
+                    <label class="input-label" data-i18n="admin_places_form_name">ชื่อสถานที่</label>
+                    <input type="text" class="input-field" data-i18n="admin_places_form_name_placeholder"
+                        placeholder="ตัวอย่าง: วัดบางพลีใหญ่ใน">
+                </div>
+
+                <div class="grid-cols-2">
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="admin_places_form_cat">หมวดหมู่</label>
+                        <select class="input-field">
+                            <option data-i18n="badge_temple">วัด/สถานที่ศักดิ์สิทธิ์</option>
+                            <option data-i18n="badge_nature">ธรรมชาติ</option>
+                            <option data-i18n="badge_cafe">คาเฟ่/ร้านอาหาร</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" data-i18n="admin_places_form_amphoe">อำเภอ</label>
+                        <select class="input-field">
+                            <option data-i18n="amphoe_mueang">เมืองสมุทรปราการ</option>
+                            <option data-i18n="amphoe_bang_phli">บางพลี</option>
+                            <option data-i18n="amphoe_phra_pradaeng">พระประแดง</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" data-i18n="admin_places_form_desc">รายละเอียด</label>
+                    <textarea class="input-field" rows="4" data-i18n="admin_places_form_desc_placeholder"
+                        placeholder="พิมพ์คำบรรยายสถานที่..."></textarea>
+                </div>
+
+                <div class="input-group mb-4">
+                    <label class="input-label" data-i18n="admin_places_form_image">อัปโหลดรูปภาพ</label>
+                    <div
+                        style="border: 2px dashed var(--border-color); padding: 32px; text-align: center; border-radius: var(--radius-sm); color: var(--text-muted); cursor:pointer;">
+                        <span data-i18n="admin_places_form_upload">+ ลากและวางไฟล์รูปภาพ (JPG, PNG)</span> <br> <span
+                            class="text-small" data-i18n="admin_places_form_upload_sub">ลากไฟล์ลงกล่องนี้
+                            หรือคลิกเพื่อค้นหา</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <button type="button" class="btn btn-outline"
+                        onclick="document.getElementById('addModal').classList.remove('show-modal')"
+                        data-i18n="admin_places_form_cancel">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary"
+                        data-i18n="admin_places_form_save">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
