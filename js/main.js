@@ -745,11 +745,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 const amphoeElement = inputs[2]; // select
                 const amphoe = amphoeElement ? amphoeElement.value || 'mueang' : 'mueang';
                 const description = inputs[3] ? inputs[3].value : '';
-                const imageUrl = document.getElementById('adminPlaceImageUrl')?.value || '';
+                
+                const fileInput = document.getElementById('adminPlaceImageFile');
+                let imageUrl = '';
+                
                 const btn = addPlaceForm.querySelector('button[type="submit"]');
                 if (btn) btn.disabled = true;
 
                 try {
+                    // Convert file to Base64
+                    if (fileInput && fileInput.files && fileInput.files[0]) {
+                        const file = fileInput.files[0];
+                        if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                            throw new Error('ขนาดไฟล์เกิน 2MB กรุณาเลือกไฟล์ที่เล็กกว่านี้');
+                        }
+                        imageUrl = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => resolve(e.target.result);
+                            reader.onerror = () => reject(new Error("ไม่สามารถอ่านไฟล์ได้"));
+                            reader.readAsDataURL(file);
+                        });
+                    }
                     await PlacesAPI.create({
                         nameTh: name,
                         nameEn: name,
