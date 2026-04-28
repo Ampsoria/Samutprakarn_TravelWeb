@@ -1452,34 +1452,55 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Bookmark feature logic
             const favBtnAction = document.getElementById('favBtnAction');
             if (favBtnAction) {
-                // Initialize bookmark state
-                let bookmarks = JSON.parse(localStorage.getItem('travelBookmarks')) || [];
-                if (bookmarks.includes(placeId)) {
-                    favBtnAction.style.color = '#EF4444'; // Red
-                    favBtnAction.querySelector('svg').setAttribute('fill', 'currentColor');
-                } else {
-                    favBtnAction.style.color = '#9CA3AF'; // Gray out
-                    favBtnAction.querySelector('svg').setAttribute('fill', 'none');
-                    favBtnAction.querySelector('svg').setAttribute('stroke', 'currentColor');
-                    favBtnAction.querySelector('svg').setAttribute('stroke-width', '2');
+                // Initialize bookmark state from API
+                let isBookmarked = false;
+                try {
+                    const checkRes = await BookmarksAPI.check(placeId);
+                    isBookmarked = checkRes.bookmarked || false;
+                } catch {
+                    // Fallback to localStorage for non-logged-in users
+                    const localBms = JSON.parse(localStorage.getItem('travelBookmarks')) || [];
+                    isBookmarked = localBms.includes(placeId);
                 }
 
-                // Handle click action
-                window.toggleBookmark = function () {
-                    let bms = JSON.parse(localStorage.getItem('travelBookmarks')) || [];
-                    if (bms.includes(placeId)) {
-                        bms = bms.filter(id => id !== placeId);
+                const updateBtnUI = (active) => {
+                    if (active) {
+                        favBtnAction.style.color = '#EF4444';
+                        favBtnAction.querySelector('svg').setAttribute('fill', 'currentColor');
+                        favBtnAction.querySelector('svg').removeAttribute('stroke');
+                    } else {
                         favBtnAction.style.color = '#9CA3AF';
                         favBtnAction.querySelector('svg').setAttribute('fill', 'none');
                         favBtnAction.querySelector('svg').setAttribute('stroke', 'currentColor');
                         favBtnAction.querySelector('svg').setAttribute('stroke-width', '2');
-                    } else {
-                        bms.push(placeId);
-                        favBtnAction.style.color = '#EF4444';
-                        favBtnAction.querySelector('svg').setAttribute('fill', 'currentColor');
-                        favBtnAction.querySelector('svg').removeAttribute('stroke');
                     }
-                    localStorage.setItem('travelBookmarks', JSON.stringify(bms));
+                };
+                updateBtnUI(isBookmarked);
+
+                // Handle click action
+                window.toggleBookmark = async function () {
+                    try {
+                        if (isBookmarked) {
+                            await BookmarksAPI.remove(placeId);
+                            isBookmarked = false;
+                        } else {
+                            await BookmarksAPI.add(placeId);
+                            isBookmarked = true;
+                        }
+                        updateBtnUI(isBookmarked);
+                    } catch (err) {
+                        // Fallback for non-logged-in users: use localStorage
+                        let bms = JSON.parse(localStorage.getItem('travelBookmarks')) || [];
+                        if (bms.includes(placeId)) {
+                            bms = bms.filter(id => id !== placeId);
+                            isBookmarked = false;
+                        } else {
+                            bms.push(placeId);
+                            isBookmarked = true;
+                        }
+                        localStorage.setItem('travelBookmarks', JSON.stringify(bms));
+                        updateBtnUI(isBookmarked);
+                    }
                 };
                 favBtnAction.setAttribute('onclick', 'toggleBookmark()');
             }
@@ -1523,7 +1544,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                             <h3 style="font-size:1.1rem; margin-bottom:4px;">${b.nameTh}</h3>
                             <p class="text-small text-muted">อ.${b.amphoe}</p>
-                            <a href="detail.html?slug=${b.slug}" class="text-small mt-2" style="color:var(--primary-orange); font-weight:600;">ดูรายละเอียด ></a>
+                            <a href="detail.html?id=${b.placeId}" class="text-small mt-2" style="color:var(--primary-orange); font-weight:600;">ดูรายละเอียด ></a>
                         </div>
                     </div>`;
             });
