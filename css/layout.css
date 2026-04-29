@@ -132,7 +132,7 @@
 
 .bottom-nav-item.active,
 .bottom-nav-item:hover {
-    color: var(--primary-orange);
+    color: var(--primary-theme);
 }
 
 .bottom-nav-item.active::before {
@@ -141,7 +141,7 @@
     top: -10px;
     width: 24px;
     height: 3px;
-    background: var(--primary-orange);
+    background: var(--primary-theme);
     border-radius: 0 0 3px 3px;
 }
 
@@ -219,7 +219,7 @@
 
 .sidebar-link.active {
     background: rgba(249, 115, 22, 0.15);
-    color: var(--primary-orange);
+    color: var(--primary-theme);
     font-weight: 600;
 }
 
@@ -229,7 +229,7 @@
     left: 0;
     width: 3px;
     height: 28px;
-    background: var(--primary-orange);
+    background: var(--primary-theme);
     border-radius: 0 3px 3px 0;
 }
 
@@ -373,7 +373,7 @@ table tr {
 }
 
 table tr:hover {
-    background: var(--primary-orange-light);
+    background: var(--primary-theme-light);
 }
 
 /* Action Button Group */

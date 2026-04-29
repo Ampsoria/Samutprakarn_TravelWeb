@@ -52,7 +52,7 @@ const translations = {
         'nav_stats': 'สถิติ',
         'nav_profile': 'โปรไฟล์',
         'nav_admin': 'AdminPanel',
-        'auth_title': 'ยินดีต้อนรับสู่<br><span style="color: var(--primary-orange);">สมุทรปราการ</span>',
+        'auth_title': 'ยินดีต้อนรับสู่<br><span style="color: var(--primary-theme);">สมุทรปราการ</span>',
         'auth_login': 'เข้าสู่ระบบ',
         'auth_register': 'สมัครสมาชิก',
         'auth_email': 'อีเมล',
@@ -71,9 +71,13 @@ const translations = {
         'tag_photo': '📸 จุดถ่ายรูป',
         'tag_food': '🍽️ ร้านอาหารเด็ด',
         'home_hello': 'สวัสดี, นักเดินทาง! 👋',
-        'home_hero': 'คุณอยากไปไหน<br>ใน<span style="color: var(--primary-orange);">สมุทรปราการ</span>วันนี้?',
+        'home_hero': 'คุณอยากไปไหน<br>ใน<span style="color: var(--primary-theme);">สมุทรปราการ</span>วันนี้?',
         'home_hero_title': 'Let\'s <span class="highlight">explore</span><br><span class="highlight">สมุทรปราการ</span>',
         'home_hero_sub': 'ค้นพบสถานที่ท่องเที่ยว วัด ธรรมชาติ และวิถีชีวิตริมน้ำของสมุทรปราการ จังหวัดที่อยู่ใกล้กรุงเทพฯ แต่มีเสน่ห์ไม่เหมือนใคร',
+        'home_intro_title': 'ทำความรู้จักสมุทรปราการ',
+        'home_intro_text': 'สมุทรปราการ หรือ "เมืองปากน้ำ" เป็นจังหวัดที่ตั้งอยู่บริเวณปากแม่น้ำเจ้าพระยา ติดกับอ่าวไทย มีประวัติศาสตร์ยาวนานตั้งแต่สมัยอยุธยา มีความโดดเด่นทั้งในด้านอุตสาหกรรม แหล่งท่องเที่ยวทางวัฒนธรรม และธรรมชาติที่อุดมสมบูรณ์',
+        'home_motto_title': 'คำขวัญประจำจังหวัดสมุทรปราการ',
+        'home_motto_text': '"ป้อมยุทธนาวี พระเจดีย์กลางน้ำ ฟาร์มจระเข้ใหญ่ งามวิไลเมืองโบราณ<br>สงกรานต์พระประแดง ปลาสลิดแห้งรสดี ประเพณีรับบัว ครบถ้วนทั่วอุตสาหกรรม"',
         'home_search': 'ค้นหาสถานที่, อำเภอ, ประเภท...',
         'home_search_btn': 'ค้นหา',
         'home_recom': 'แนะนำสำหรับคุณ (สายเข้าวัด)',
@@ -206,7 +210,7 @@ const translations = {
         'nav_stats': 'Stats',
         'nav_profile': 'Profile',
         'nav_admin': 'AdminPanel',
-        'auth_title': 'Welcome to<br><span style="color: var(--primary-orange);">Samut Prakan</span>',
+        'auth_title': 'Welcome to<br><span style="color: var(--primary-theme);">Samut Prakan</span>',
         'auth_login': 'Login',
         'auth_register': 'Register',
         'auth_email': 'Email',
@@ -225,9 +229,13 @@ const translations = {
         'tag_photo': '📸 Photo Spots',
         'tag_food': '🍽️ Great Food',
         'home_hello': 'Hello, Traveler! 👋',
-        'home_hero': 'Where do you want to go<br>in <span style="color: var(--primary-orange);">Samut Prakan</span> today?',
+        'home_hero': 'Where do you want to go<br>in <span style="color: var(--primary-theme);">Samut Prakan</span> today?',
         'home_hero_title': 'Let\'s <span class="highlight">explore</span><br><span class="highlight">Samut Prakan</span>',
         'home_hero_sub': 'Discover temples, nature, and the riverside lifestyle of Samut Prakan — a charming province just outside Bangkok with a unique character all its own.',
+        'home_intro_title': 'Get to Know Samut Prakan',
+        'home_intro_text': 'Samut Prakan, also known as "Pak Nam", is located at the mouth of the Chao Phraya River on the Gulf of Thailand. With a rich history dating back to the Ayutthaya period, it stands out for its thriving industries, cultural attractions, and abundant nature.',
+        'home_motto_title': 'Provincial Motto of Samut Prakan',
+        'home_motto_text': '"Naval Battle Fort, Chedi in the Water, Crocodile Farm,<br>Ancient City, Phra Pradaeng Songkran, Tasty Dried Salit Fish,<br>Lotus Receiving Festival, Complete with Industries."',
         'home_search': 'Search places, districts, categories...',
         'home_search_btn': 'Search',
         'home_recom': 'Recommended for You (Temple Lover)',
@@ -1096,7 +1104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="review-status ${statusClass}">${statusText}</span>
                         <h3 style="font-size:1.1rem; margin-bottom:4px;">สถานที่: <span>${placeName}</span></h3>
                         <p class="text-small text-muted mb-2">โดย: ${userName} • ${dateStr}</p>
-                        <div style="color:var(--primary-orange);" class="mb-1">${stars}</div>
+                        <div style="color:var(--primary-theme);" class="mb-1">${stars}</div>
                         <p class="text-body" style="color:var(--text-dark); background:#F9FAFB; padding:12px; border-radius:8px; border:1px solid #E5E7EB;">
                             ${r.comment || '(ไม่มีความคิดเห็น)'}
                         </p>
@@ -1605,7 +1613,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                             <h3 style="font-size:1.1rem; margin-bottom:4px;">${b.nameTh}</h3>
                             <p class="text-small text-muted">อ.${b.amphoe}</p>
-                            <a href="detail.html?id=${b.placeId}" class="text-small mt-2" style="color:var(--primary-orange); font-weight:600;">ดูรายละเอียด ></a>
+                            <a href="detail.html?id=${b.placeId}" class="text-small mt-2" style="color:var(--primary-theme); font-weight:600;">ดูรายละเอียด ></a>
                         </div>
                     </div>`;
             });

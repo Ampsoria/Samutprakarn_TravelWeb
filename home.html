@@ -41,7 +41,7 @@
         }
 
         .home-nav-logo span {
-            color: var(--primary-orange);
+            color: var(--primary-theme);
         }
 
         .home-nav-links {
@@ -60,7 +60,7 @@
 
         .home-nav-links a:hover,
         .home-nav-links a.active {
-            color: var(--primary-orange);
+            color: var(--primary-theme);
         }
 
         .home-nav-right {
@@ -86,7 +86,7 @@
 
         .hero-text h1 {
             font-family: var(--font-heading);
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(3rem, 6vw, 5rem);
             font-weight: 800;
             line-height: 1.1;
             color: var(--text-dark);
@@ -95,7 +95,7 @@
         }
 
         .hero-text h1 .highlight {
-            color: var(--primary-orange);
+            color: var(--primary-theme);
             position: relative;
             display: inline-block;
         }
@@ -107,13 +107,13 @@
             left: 0;
             right: 0;
             height: 6px;
-            background: var(--primary-orange);
+            background: var(--primary-theme);
             opacity: 0.25;
             border-radius: 3px;
         }
 
         .hero-subtitle {
-            font-size: 1.05rem;
+            font-size: 1.2rem;
             color: var(--text-muted);
             line-height: 1.8;
             margin-bottom: 32px;
@@ -207,7 +207,7 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: var(--primary-orange);
+            background: var(--primary-theme);
             border: none;
             cursor: pointer;
             display: flex;
@@ -260,8 +260,8 @@
         }
 
         .section-nav-btn:hover {
-            background: var(--primary-orange);
-            border-color: var(--primary-orange);
+            background: var(--primary-theme);
+            border-color: var(--primary-theme);
             color: white;
         }
 
@@ -363,17 +363,17 @@
         }
 
         .category-chip:hover {
-            border-color: var(--primary-orange);
-            color: var(--primary-orange);
+            border-color: var(--primary-theme);
+            color: var(--primary-theme);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(249, 115, 22, 0.1);
         }
 
         .category-chip.active {
-            background: var(--primary-orange);
+            background: var(--primary-theme);
             color: white;
-            border-color: var(--primary-orange);
-            box-shadow: var(--shadow-orange);
+            border-color: var(--primary-theme);
+            box-shadow: var(--shadow-theme);
         }
 
         /* --- All Places Grid --- */
@@ -605,7 +605,7 @@
     <!-- ===== Top Navigation ===== -->
     <nav class="home-top-nav">
         <a href="home.html" class="home-nav-logo">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--primary-orange)">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="var(--primary-theme)">
                 <path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z" />
             </svg>
             Samut<span>Prakan</span>
@@ -710,6 +710,20 @@
         </div>
     </section>
 
+    <!-- ===== Intro & Motto Section ===== -->
+    <section class="intro-section" style="max-width: 1200px; margin: 0 auto 60px; padding: 40px; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); text-align: center;">
+        <h2 class="mb-2" style="color: var(--primary-theme); font-size: 2.2rem;" data-i18n="home_intro_title">ทำความรู้จักสมุทรปราการ</h2>
+        <p class="text-body mb-4" style="font-size: 1.15rem; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8;" data-i18n="home_intro_text">
+            สมุทรปราการ หรือ "เมืองปากน้ำ" เป็นจังหวัดที่ตั้งอยู่บริเวณปากแม่น้ำเจ้าพระยา ติดกับอ่าวไทย มีประวัติศาสตร์ยาวนานตั้งแต่สมัยอยุธยา มีความโดดเด่นทั้งในด้านอุตสาหกรรม แหล่งท่องเที่ยวทางวัฒนธรรม และธรรมชาติที่อุดมสมบูรณ์
+        </p>
+        <div style="background: var(--primary-theme-light); padding: 32px; border-radius: var(--radius-md); border-left: 6px solid var(--primary-theme);">
+            <h3 class="mb-3" style="font-size: 1.5rem; color: var(--primary-theme);" data-i18n="home_motto_title">คำขวัญประจำจังหวัดสมุทรปราการ</h3>
+            <p style="font-size: 1.4rem; font-weight: 600; color: var(--text-dark); line-height: 1.8;" data-i18n="home_motto_text">
+                "ป้อมยุทธนาวี พระเจดีย์กลางน้ำ ฟาร์มจระเข้ใหญ่ งามวิไลเมืองโบราณ<br>สงกรานต์พระประแดง ปลาสลิดแห้งรสดี ประเพณีรับบัว ครบถ้วนทั่วอุตสาหกรรม"
+            </p>
+        </div>
+    </section>
+
     <!-- ===== Popular Destinations ===== -->
     <div class="section-header">
         <h2 data-i18n="home_popular">Popular Destinations</h2>
@@ -733,7 +747,7 @@
     <!-- ===== Trending Section ===== -->
     <div class="section-header">
         <h2 data-i18n="home_trending">กำลังมาแรง 🔥</h2>
-        <a href="search.html" style="color: var(--primary-orange); font-weight: 600; font-size: 0.9rem;"
+        <a href="search.html" style="color: var(--primary-theme); font-weight: 600; font-size: 0.9rem;"
             data-i18n="home_view_all">ดูทั้งหมด →</a>
     </div>
     <div class="trending-row" id="homeTrendingGrid">
@@ -759,7 +773,7 @@
     <section class="all-places-section">
         <div class="flex justify-between items-center mb-3">
             <h2 style="font-size: 1.8rem;" data-i18n="home_all_places">สถานที่ทั้งหมด</h2>
-            <a href="search.html" style="color: var(--primary-orange); font-weight: 600;"
+            <a href="search.html" style="color: var(--primary-theme); font-weight: 600;"
                 data-i18n="home_filter_link">กรองผลลัพธ์ →</a>
         </div>
         <div class="places-grid stagger-children" id="homeAllPlacesGrid">

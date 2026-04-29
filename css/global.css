@@ -7,16 +7,16 @@
     --text-muted: #64748B; /* Slate 500 */
     --text-light: #94A3B8; /* Slate 400 */
 
-    /* Orange Accent (vibrant, modern) */
-    --primary-orange: #F97316;
-    --primary-orange-hover: #EA580C;
-    --primary-orange-light: #FFF7ED;
-    --primary-orange-glow: rgba(249, 115, 22, 0.3);
+    /* Sea Blue Accent (Samut Prakan Theme) */
+    --primary-theme: #0284C7; /* Sky blue/Teal */
+    --primary-theme-hover: #0369A1;
+    --primary-theme-light: #F0F9FF;
+    --primary-theme-glow: rgba(2, 132, 199, 0.3);
 
     /* Gradient Accents */
-    --gradient-primary: linear-gradient(135deg, #F97316 0%, #FB923C 50%, #FDBA74 100%);
-    --gradient-warm: linear-gradient(135deg, #FDE68A 0%, #F97316 100%);
-    --gradient-sunset: linear-gradient(135deg, #F97316 0%, #EC4899 100%);
+    --gradient-primary: linear-gradient(135deg, #0284C7 0%, #38BDF8 50%, #7DD3FC 100%);
+    --gradient-warm: linear-gradient(135deg, #A7F3D0 0%, #0284C7 100%);
+    --gradient-sunset: linear-gradient(135deg, #0284C7 0%, #8B5CF6 100%);
     --gradient-dark: linear-gradient(135deg, #18181B 0%, #27272A 100%);
 
     /* Card & Surface Colors */
@@ -30,7 +30,7 @@
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.02);
     --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.04);
     --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.06);
-    --shadow-orange: 0 8px 24px rgba(249, 115, 22, 0.25);
+    --shadow-theme: 0 8px 24px rgba(2, 132, 199, 0.25);
     --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
 
     /* Spacing System (8px grid) */
@@ -146,7 +146,7 @@ ul { list-style: none; }
 
 /* === Selection === */
 ::selection {
-    background: var(--primary-orange);
+    background: var(--primary-theme);
     color: white;
 }
 
