@@ -43,34 +43,6 @@
             gap: var(--spacing-2);
         }
 
-        /* Modal Overlay (Simulated) */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 100;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-box {
-            background: white;
-            border-radius: var(--radius-lg);
-            width: 100%;
-            max-width: 600px;
-            padding: var(--spacing-4);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        /* Utility specific */
-        .show-modal {
-            display: flex !important;
-        }
     </style>
 </head>
 
@@ -173,25 +145,32 @@
                 <div class="grid-cols-2">
                     <div class="input-group">
                         <label class="input-label" data-i18n="admin_places_form_cat">หมวดหมู่</label>
-                        <select class="input-field">
-                            <option data-i18n="badge_temple">วัด/สถานที่ศักดิ์สิทธิ์</option>
-                            <option data-i18n="badge_nature">ธรรมชาติ</option>
-                            <option data-i18n="badge_cafe">คาเฟ่/ร้านอาหาร</option>
+                        <select class="input-field" id="addPlaceCategory">
+                            <option value="temple" data-i18n="badge_temple">วัด/สถานที่ศักดิ์สิทธิ์</option>
+                            <option value="nature" data-i18n="badge_nature">ธรรมชาติ</option>
+                            <option value="cafe" data-i18n="badge_cafe">คาเฟ่/ร้านอาหาร</option>
+                            <option value="history" data-i18n="badge_history">ประวัติศาสตร์</option>
+                            <option value="art" data-i18n="badge_art">ศิลปวัฒนธรรม</option>
+                            <option value="food" data-i18n="filter_food">ร้านอาหาร</option>
+                            <option value="shopping" data-i18n="badge_shopping">ช้อปปิ้ง</option>
                         </select>
                     </div>
                     <div class="input-group">
                         <label class="input-label" data-i18n="admin_places_form_amphoe">อำเภอ</label>
-                        <select class="input-field">
-                            <option data-i18n="amphoe_mueang">เมืองสมุทรปราการ</option>
-                            <option data-i18n="amphoe_bang_phli">บางพลี</option>
-                            <option data-i18n="amphoe_phra_pradaeng">พระประแดง</option>
+                        <select class="input-field" id="addPlaceAmphoe">
+                            <option value="mueang" data-i18n="amphoe_mueang">เมืองสมุทรปราการ</option>
+                            <option value="bang_phli" data-i18n="amphoe_bang_phli">บางพลี</option>
+                            <option value="phra_pradaeng" data-i18n="amphoe_phra_pradaeng">พระประแดง</option>
+                            <option value="phra_samut_chedi" data-i18n="amphoe_phra_samut_chedi">พระสมุทรเจดีย์</option>
+                            <option value="bang_bo" data-i18n="amphoe_bang_bo">บางบ่อ</option>
+                            <option value="bang_sao_thong" data-i18n="amphoe_bang_sao_thong">บางเสาธง</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label class="input-label" data-i18n="admin_places_form_desc">รายละเอียด</label>
-                    <textarea class="input-field" rows="4" data-i18n="admin_places_form_desc_placeholder"
+                    <textarea class="input-field" id="addPlaceDesc" rows="4" data-i18n="admin_places_form_desc_placeholder"
                         placeholder="พิมพ์คำบรรยายสถานที่..."></textarea>
                 </div>
 

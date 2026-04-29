@@ -99,6 +99,7 @@ const translations = {
         'filter_phra_pradaeng': 'พระประแดง',
         'filter_phra_samut_chedi': 'พระสมุทรเจดีย์',
         'filter_bang_bo': 'บางบ่อ',
+        'filter_bang_sao_thong': 'บางเสาธง',
         'filter_free': 'ฟรี',
         'filter_paid': 'มีค่าเข้าชม',
         'badge_temple': 'วัดและธรรมะ',
@@ -168,6 +169,9 @@ const translations = {
         'amphoe_mueang': 'เมืองสมุทรปราการ',
         'amphoe_bang_phli': 'บางพลี',
         'amphoe_phra_pradaeng': 'พระประแดง',
+        'amphoe_phra_samut_chedi': 'พระสมุทรเจดีย์',
+        'amphoe_bang_bo': 'บางบ่อ',
+        'amphoe_bang_sao_thong': 'บางเสาธง',
         'admin_places_form_desc': 'รายละเอียด',
         'admin_places_form_desc_placeholder': 'พิมพ์คำบรรยายสถานที่...',
         'admin_places_form_image': 'อัปโหลดรูปภาพ',
@@ -249,6 +253,7 @@ const translations = {
         'filter_phra_pradaeng': 'Phra Pradaeng',
         'filter_phra_samut_chedi': 'Phra Samut Chedi',
         'filter_bang_bo': 'Bang Bo',
+        'filter_bang_sao_thong': 'Bang Sao Thong',
         'filter_free': 'Free',
         'filter_paid': 'Admission Fee',
         'badge_temple': 'Temple',
@@ -318,6 +323,9 @@ const translations = {
         'amphoe_mueang': 'Mueang Samut Prakan',
         'amphoe_bang_phli': 'Bang Phli',
         'amphoe_phra_pradaeng': 'Phra Pradaeng',
+        'amphoe_phra_samut_chedi': 'Phra Samut Chedi',
+        'amphoe_bang_bo': 'Bang Bo',
+        'amphoe_bang_sao_thong': 'Bang Sao Thong',
         'admin_places_form_desc': 'Description',
         'admin_places_form_desc_placeholder': 'Write place description...',
         'admin_places_form_image': 'Upload Image',
@@ -406,134 +414,134 @@ initDb();
 if (false) { // ------- DISABLED: old mock localStorage data -------
     const PLACES_VERSION = 7;
     const _oldInitDb = () => {
-    const storedVersion = parseInt(localStorage.getItem('travelPlacesVersion') || '0');
-    if (!localStorage.getItem('travelPlaces') || storedVersion < PLACES_VERSION) {
-        const initialPlaces = [
-            {
-                id: 1, nameTh: 'สถานตากอากาศบางปู', nameEn: 'Bang Pu Recreation Center', category: 'nature', amphoe: 'mueang', img: 'https://cms.dmpcdn.com/travel/2020/11/16/819aa990-27db-11eb-8c49-6ff1aae212a5_original.jpg', rating: 4.8, price: 0,
-                descTh: 'สถานตากอากาศริมทะเลอ่าวไทย เป็นจุดดูนกนางนวลอพยพจากไซบีเรียในช่วงฤดูหนาว มีสะพานสุขตาทอดยาวออกไปในทะเล ร้านอาหารทะเลวิวสวย',
-                descEn: 'A seaside retreat on the Gulf of Thailand, famous for migratory seagulls from Siberia in winter. Features a long pier and seafood restaurants with stunning views.'
-            },
-            {
-                id: 2, nameTh: 'วัดอโศการาม', nameEn: 'Wat Asokaram', category: 'temple', amphoe: 'mueang', img: 'https://cms.dmpcdn.com/travel/2020/08/05/c0db8050-d6ca-11ea-b266-05fb6365be92_original.jpg', rating: 4.7, price: 0,
-                descTh: 'วัดที่มีสถาปัตยกรรมสีขาวสวยงาม บรรยากาศสงบเงียบ เหมาะแก่การปฏิบัติธรรมและถ่ายรูป ตั้งอยู่ริมทะเลบางปู',
-                descEn: 'A serene temple with beautiful white architecture, perfect for meditation and photography, located near the coast of Bang Pu.'
-            },
-            {
-                id: 3, nameTh: 'เมืองโบราณ', nameEn: 'Ancient City (Muang Boran)', category: 'history', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Samutprakarn_Ancient_Siam_2.jpg/800px-Samutprakarn_Ancient_Siam_2.jpg', rating: 4.9, price: 400,
-                descTh: 'พิพิธภัณฑ์กลางแจ้งที่ใหญ่ที่สุดในโลก รวบรวมสถานที่สำคัญทางวัฒนธรรมไทยจากทั่วประเทศกว่า 121 แห่ง ปั่นจักรยานชมได้ทั้งวัน',
-                descEn: 'The world\'s largest open-air museum, showcasing over 121 replicas of Thailand\'s cultural landmarks. Great for cycling and sightseeing.'
-            },
-            {
-                id: 4, nameTh: 'พิพิธภัณฑ์ช้างเอราวัณ', nameEn: 'Erawan Museum', category: 'art', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Erawan_Museum_2019.jpg/800px-Erawan_Museum_2019.jpg', rating: 4.8, price: 250,
-                descTh: 'สถานที่ศักดิ์สิทธิ์ที่มีรูปปั้นช้างสามเศียรขนาดมหึมา ภายในจัดแสดงศิลปวัตถุล้ำค่าหลายชิ้น ผสมผสานศิลปะ วัฒนธรรม และศาสนาอย่างงดงาม',
-                descEn: 'A sacred place with a massive three-headed elephant statue, housing priceless art collections blending art, culture, and religion.'
-            },
-            {
-                id: 5, nameTh: 'ตลาดน้ำบางน้ำผึ้ง', nameEn: 'Bang Nam Phueng Floating Market', category: 'food', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Bang_Nam_Phueng_Floating_Market_05.jpg/800px-Bang_Nam_Phueng_Floating_Market_05.jpg', rating: 4.6, price: 0,
-                descTh: 'ตลาดน้ำชุมชนในคุ้งบางกะเจ้า ขายสินค้าพื้นบ้าน อาหารคาวหวาน ผลไม้สด บรรยากาศริมคลองอันร่มรื่น เปิดวันเสาร์-อาทิตย์',
-                descEn: 'A community floating market in Bang Kra Jao, selling local treats, fruit, and savory dishes in a lush canal-side setting. Open weekends.'
-            },
-            {
-                id: 6, nameTh: 'คุ้งบางกระเจ้า', nameEn: 'Bang Kra Jao (Green Lung)', category: 'nature', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Bang_Krachao_from_Chao_Phraya_Sky_Park.jpg/800px-Bang_Krachao_from_Chao_Phraya_Sky_Park.jpg', rating: 4.7, price: 0,
-                descTh: 'ปอดของกรุงเทพฯ พื้นที่สีเขียวขนาดใหญ่ เหมาะสำหรับปั่นจักรยาน พายเรือคายัค และสัมผัสวิถีชีวิตริมน้ำ',
-                descEn: 'Known as the "Lung of Bangkok", a large green area perfect for cycling, kayaking, and experiencing riverside lifestyle.'
-            },
-            {
-                id: 7, nameTh: 'ฟาร์มจระเข้สมุทรปราการ', nameEn: 'Samut Prakan Crocodile Farm & Zoo', category: 'nature', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Samutprakarn_CrocodileFarm1.jpg/800px-Samutprakarn_CrocodileFarm1.jpg', rating: 4.3, price: 300,
-                descTh: 'ฟาร์มจระเข้ที่ใหญ่ที่สุดในประเทศไทย มีจระเข้กว่า 60,000 ตัว พร้อมโชว์จระเข้และสวนสัตว์ ครอบครัวชื่นชอบ',
-                descEn: 'Thailand\'s largest crocodile farm with over 60,000 crocodiles, featuring crocodile shows and a zoo. Great for families.'
-            },
-            {
-                id: 8, nameTh: 'วัดพระสมุทรเจดีย์', nameEn: 'Wat Phra Samut Chedi', category: 'temple', amphoe: 'phra_samut_chedi', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Wat_Phra_Samut_Chedi_%28I%29.jpg/800px-Wat_Phra_Samut_Chedi_%28I%29.jpg', rating: 4.5, price: 0,
-                descTh: 'พระเจดีย์กลางน้ำ สัญลักษณ์ของจังหวัดสมุทรปราการ เป็นวัดที่มีพุทธศาสนิกชนมากราบไหว้สักการะมาอย่างยาวนาน',
-                descEn: 'The iconic "Chedi in the water", symbol of Samut Prakan province, a revered temple for Buddhist worship for centuries.'
-            },
-            {
-                id: 9, nameTh: 'ป้อมพระจุลจอมเกล้า', nameEn: 'Phra Chulachomklao Fort', category: 'history', amphoe: 'phra_samut_chedi', img: 'https://www.samutprakan.go.th/wp-content/uploads/2021/05/11_re-1.jpg', rating: 4.4, price: 0,
-                descTh: 'ป้อมปืนสมัยรัชกาลที่ 5 สร้างเพื่อป้องกันประเทศจากภัยคุกคามทางทะเล เป็นสถานที่ทางประวัติศาสตร์ที่สำคัญยิ่ง',
-                descEn: 'A Rama V-era fort built to defend the kingdom from sea threats. An important historical site in Thai history.'
-            },
-            {
-                id: 10, nameTh: 'วัดบางพลีใหญ่ใน', nameEn: 'Wat Bang Phli Yai Nai', category: 'temple', amphoe: 'bang_phli', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Wat_Bang_Phli_Yai_Nai_01.jpg/800px-Wat_Bang_Phli_Yai_Nai_01.jpg', rating: 4.6, price: 0,
-                descTh: 'วัดสำคัญประดิษฐานหลวงพ่อโต พระพุทธรูปปางมารวิชัยสมัยสุโขทัย ผู้คนนิยมมาขอพรเพื่อความเป็นสิริมงคล',
-                descEn: 'An important temple housing Luang Pho To, a Sukhothai-era Buddha image. Popular for blessings and merit-making.'
-            },
-            {
-                id: 11, nameTh: 'หอชมเมืองสมุทรปราการ', nameEn: 'Samut Prakan Observation Tower', category: 'art', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Samut_Prakan_Observation_Tower.jpg/800px-Samut_Prakan_Observation_Tower.jpg', rating: 4.5, price: 100,
-                descTh: 'จุดชมวิว 360 องศาของจังหวัดสมุทรปราการ มองเห็นแม่น้ำเจ้าพระยาและเมืองโดยรอบ พร้อมนิทรรศการประวัติศาสตร์ท้องถิ่น',
-                descEn: '360-degree observatory of Samut Prakan province, overlooking the Chao Phraya River and surrounding city with local history exhibits.'
-            },
-            {
-                id: 12, nameTh: 'ตลาดคลองสวน 100 ปี', nameEn: 'Khlong Suan 100 Years Market', category: 'food', amphoe: 'bang_bo', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Khlong_Suan_Market.JPG/800px-Khlong_Suan_Market.JPG', rating: 4.4, price: 0,
-                descTh: 'ตลาดเก่าแก่ริมคลองอายุกว่า 100 ปี รักษาวิถีชีวิตดั้งเดิมไว้ มีอาหารท้องถิ่นและขนมโบราณ ซึมซับบรรยากาศย้อนยุค',
-                descEn: 'A century-old canal-side market preserving traditional lifestyle with local foods and vintage snacks. Perfect for cultural immersion.'
-            },
-            {
-                id: 13, nameTh: 'วัดโปรดเกศเชษฐาราม', nameEn: 'Wat Protket Chettharam', category: 'temple', amphoe: 'phra_pradaeng', img: 'https://www.samutprakan.go.th/wp-content/uploads/2021/06/1_ree-2.jpg', rating: 4.3, price: 0,
-                descTh: 'วัดเก่าแก่ในย่านพระประแดง มีสถาปัตยกรรมอันงดงาม เป็นวัดไทยพุทธเพียงวัดเดียวที่มีเอกลักษณ์เฉพาะตัวในย่านนี้',
-                descEn: 'An ancient temple in Phra Pradaeng with beautiful architecture, the only Thai Buddhist temple with a unique style in this area.'
-            },
-            {
-                id: 14, nameTh: 'สวนสุขภาพลัดโพธิ์', nameEn: 'Lat Pho Park', category: 'nature', amphoe: 'phra_pradaeng', img: 'https://palanla.com/ckeditor/upload/files/id37/domestic_location/Lat%20Pho%20Park/001.jpg', rating: 4.2, price: 0,
-                descTh: 'สวนสาธารณะที่ร่มรื่น ริมแม่น้ำเจ้าพระยา มีเส้นทางวิ่งและปั่นจักรยาน เหมาะกับการออกกำลังกายและพักผ่อนหย่อนใจ',
-                descEn: 'A lush public park along the Chao Phraya River with jogging and cycling paths, ideal for exercise and relaxation.'
-            },
-            {
-                id: 15, nameTh: 'วัดกลางวรวิหาร', nameEn: 'Wat Klang Worawihan', category: 'temple', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/2/22/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%A5%E0%B8%B2%E0%B8%87%E0%B8%A7%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3_%E0%B8%AD.%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87_%E0%B8%88.%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%97%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3_%2815%29.jpg', rating: 4.4, price: 0,
-                descTh: 'วัดใจกลางเมืองสมุทรปราการ สร้างในสมัยอยุธยา ภายในมีพระอุโบสถเก่าแก่และพระพุทธรูปสำคัญ',
-                descEn: 'A temple in the heart of Samut Prakan city, built during the Ayutthaya period with an ancient ordination hall.'
-            },
-            {
-                id: 16, nameTh: 'พิพิธภัณฑ์ทหารเรือ', nameEn: 'Royal Thai Navy Museum', category: 'history', amphoe: 'mueang', img: 'https://www.navy.mi.th/storage/frontend/editor/1bdfe2cc-54a1-4a1c-bf2a-ef8b78db2ea7.jfif', rating: 4.2, price: 0,
-                descTh: 'จัดแสดงอาวุธ ยุทโธปกรณ์ และประวัติศาสตร์ราชนาวีไทย ตั้งอยู่ในบริเวณโรงเรียนนายเรือ',
-                descEn: 'Displays weapons, equipment, and the history of the Royal Thai Navy, located within the Naval Academy.'
-            },
-            {
-                id: 17, nameTh: 'ป้อมผีเสื้อสมุทร', nameEn: 'Phi Suea Samut Fort', category: 'history', amphoe: 'phra_samut_chedi', img: 'https://cms.dmpcdn.com/travel/2021/05/19/44e480e0-b85c-11eb-9ca2-73594b023eb0_original.jpg', rating: 4.3, price: 0,
-                descTh: 'ป้อมบนเกาะกลางแม่น้ำเจ้าพระยา มีรูปทรงคล้ายผีเสื้อกางปีก สร้างเพื่อป้องกันประเทศ ปัจจุบันเป็นพิพิธภัณฑ์',
-                descEn: 'A butterfly-shaped fort on an island in the Chao Phraya River, built for national defense, now a museum.'
-            },
-            {
-                id: 18, nameTh: 'วัดบางพลีใหญ่กลาง', nameEn: 'Wat Bang Phli Yai Klang', category: 'temple', amphoe: 'bang_phli', img: 'https://cms.dmpcdn.com/ugcarticle/2024/07/04/23ab7ea0-3960-11ef-9aad-89e9aa31b573_webp_original.webp', rating: 4.5, price: 0,
-                descTh: 'หรือ "วัดพระนอน" ประดิษฐานพระปางไสยาสน์องค์ใหญ่ที่สุดในประเทศไทย สร้างความประทับใจแต่แรกเห็น',
-                descEn: 'Also known as "Sleeping Buddha Temple", housing the largest reclining Buddha in Thailand. Impressive from first sight.'
-            },
-            {
-                id: 19, nameTh: 'สวนศรีนครเขื่อนขันธ์', nameEn: 'Sri Nakhon Khuean Khan Park', category: 'nature', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Sri_Nakhon_Khuean_Khan_Park_09.JPG/1024px-Sri_Nakhon_Khuean_Khan_Park_09.JPG', rating: 4.6, price: 0,
-                descTh: 'สวนสาธารณะขนาดใหญ่ในคุ้งบางกะเจ้า มีเส้นทางเดิน ปั่นจักรยาน และจุดชมนก เหมาะกับครอบครัวและท่องเที่ยวเชิงอนุรักษ์',
-                descEn: 'A large public park in Bang Kra Jao with walking trails, cycling paths, and birdwatching spots. Perfect for eco-tourism.'
-            },
-            {
-                id: 20, nameTh: 'วัดไพชยนต์พลเสพย์ราชวรวิหาร', nameEn: 'Wat Phaichiyon Phonlasep', category: 'temple', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%AD%E0%B8%B8%E0%B9%82%E0%B8%9A%E0%B8%AA%E0%B8%96%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%84%E0%B8%9E%E0%B8%8A%E0%B8%A2%E0%B8%99%E0%B8%95%E0%B9%8C%E0%B8%9E%E0%B8%A5%E0%B9%80%E0%B8%AA%E0%B8%9E%E0%B8%A2%E0%B9%8C%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A7%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3.jpg', rating: 4.3, price: 0,
-                descTh: 'วัดเก่าแก่ในพระประแดง มีโบสถ์และวิหารอันงดงามสะท้อนศิลปะไทยโบราณ สงบร่มรื่นเหมาะแก่การสักการะ',
-                descEn: 'An ancient temple in Phra Pradaeng with beautiful chapel and halls reflecting traditional Thai art, serene and peaceful.'
-            }
-        ];
-        localStorage.setItem('travelPlaces', JSON.stringify(initialPlaces));
-        localStorage.setItem('travelPlacesVersion', PLACES_VERSION.toString());
-    }
+        const storedVersion = parseInt(localStorage.getItem('travelPlacesVersion') || '0');
+        if (!localStorage.getItem('travelPlaces') || storedVersion < PLACES_VERSION) {
+            const initialPlaces = [
+                {
+                    id: 1, nameTh: 'สถานตากอากาศบางปู', nameEn: 'Bang Pu Recreation Center', category: 'nature', amphoe: 'mueang', img: 'https://cms.dmpcdn.com/travel/2020/11/16/819aa990-27db-11eb-8c49-6ff1aae212a5_original.jpg', rating: 4.8, price: 0,
+                    descTh: 'สถานตากอากาศริมทะเลอ่าวไทย เป็นจุดดูนกนางนวลอพยพจากไซบีเรียในช่วงฤดูหนาว มีสะพานสุขตาทอดยาวออกไปในทะเล ร้านอาหารทะเลวิวสวย',
+                    descEn: 'A seaside retreat on the Gulf of Thailand, famous for migratory seagulls from Siberia in winter. Features a long pier and seafood restaurants with stunning views.'
+                },
+                {
+                    id: 2, nameTh: 'วัดอโศการาม', nameEn: 'Wat Asokaram', category: 'temple', amphoe: 'mueang', img: 'https://cms.dmpcdn.com/travel/2020/08/05/c0db8050-d6ca-11ea-b266-05fb6365be92_original.jpg', rating: 4.7, price: 0,
+                    descTh: 'วัดที่มีสถาปัตยกรรมสีขาวสวยงาม บรรยากาศสงบเงียบ เหมาะแก่การปฏิบัติธรรมและถ่ายรูป ตั้งอยู่ริมทะเลบางปู',
+                    descEn: 'A serene temple with beautiful white architecture, perfect for meditation and photography, located near the coast of Bang Pu.'
+                },
+                {
+                    id: 3, nameTh: 'เมืองโบราณ', nameEn: 'Ancient City (Muang Boran)', category: 'history', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Samutprakarn_Ancient_Siam_2.jpg/800px-Samutprakarn_Ancient_Siam_2.jpg', rating: 4.9, price: 400,
+                    descTh: 'พิพิธภัณฑ์กลางแจ้งที่ใหญ่ที่สุดในโลก รวบรวมสถานที่สำคัญทางวัฒนธรรมไทยจากทั่วประเทศกว่า 121 แห่ง ปั่นจักรยานชมได้ทั้งวัน',
+                    descEn: 'The world\'s largest open-air museum, showcasing over 121 replicas of Thailand\'s cultural landmarks. Great for cycling and sightseeing.'
+                },
+                {
+                    id: 4, nameTh: 'พิพิธภัณฑ์ช้างเอราวัณ', nameEn: 'Erawan Museum', category: 'art', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Erawan_Museum_2019.jpg/800px-Erawan_Museum_2019.jpg', rating: 4.8, price: 250,
+                    descTh: 'สถานที่ศักดิ์สิทธิ์ที่มีรูปปั้นช้างสามเศียรขนาดมหึมา ภายในจัดแสดงศิลปวัตถุล้ำค่าหลายชิ้น ผสมผสานศิลปะ วัฒนธรรม และศาสนาอย่างงดงาม',
+                    descEn: 'A sacred place with a massive three-headed elephant statue, housing priceless art collections blending art, culture, and religion.'
+                },
+                {
+                    id: 5, nameTh: 'ตลาดน้ำบางน้ำผึ้ง', nameEn: 'Bang Nam Phueng Floating Market', category: 'food', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Bang_Nam_Phueng_Floating_Market_05.jpg/800px-Bang_Nam_Phueng_Floating_Market_05.jpg', rating: 4.6, price: 0,
+                    descTh: 'ตลาดน้ำชุมชนในคุ้งบางกะเจ้า ขายสินค้าพื้นบ้าน อาหารคาวหวาน ผลไม้สด บรรยากาศริมคลองอันร่มรื่น เปิดวันเสาร์-อาทิตย์',
+                    descEn: 'A community floating market in Bang Kra Jao, selling local treats, fruit, and savory dishes in a lush canal-side setting. Open weekends.'
+                },
+                {
+                    id: 6, nameTh: 'คุ้งบางกระเจ้า', nameEn: 'Bang Kra Jao (Green Lung)', category: 'nature', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Bang_Krachao_from_Chao_Phraya_Sky_Park.jpg/800px-Bang_Krachao_from_Chao_Phraya_Sky_Park.jpg', rating: 4.7, price: 0,
+                    descTh: 'ปอดของกรุงเทพฯ พื้นที่สีเขียวขนาดใหญ่ เหมาะสำหรับปั่นจักรยาน พายเรือคายัค และสัมผัสวิถีชีวิตริมน้ำ',
+                    descEn: 'Known as the "Lung of Bangkok", a large green area perfect for cycling, kayaking, and experiencing riverside lifestyle.'
+                },
+                {
+                    id: 7, nameTh: 'ฟาร์มจระเข้สมุทรปราการ', nameEn: 'Samut Prakan Crocodile Farm & Zoo', category: 'nature', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Samutprakarn_CrocodileFarm1.jpg/800px-Samutprakarn_CrocodileFarm1.jpg', rating: 4.3, price: 300,
+                    descTh: 'ฟาร์มจระเข้ที่ใหญ่ที่สุดในประเทศไทย มีจระเข้กว่า 60,000 ตัว พร้อมโชว์จระเข้และสวนสัตว์ ครอบครัวชื่นชอบ',
+                    descEn: 'Thailand\'s largest crocodile farm with over 60,000 crocodiles, featuring crocodile shows and a zoo. Great for families.'
+                },
+                {
+                    id: 8, nameTh: 'วัดพระสมุทรเจดีย์', nameEn: 'Wat Phra Samut Chedi', category: 'temple', amphoe: 'phra_samut_chedi', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Wat_Phra_Samut_Chedi_%28I%29.jpg/800px-Wat_Phra_Samut_Chedi_%28I%29.jpg', rating: 4.5, price: 0,
+                    descTh: 'พระเจดีย์กลางน้ำ สัญลักษณ์ของจังหวัดสมุทรปราการ เป็นวัดที่มีพุทธศาสนิกชนมากราบไหว้สักการะมาอย่างยาวนาน',
+                    descEn: 'The iconic "Chedi in the water", symbol of Samut Prakan province, a revered temple for Buddhist worship for centuries.'
+                },
+                {
+                    id: 9, nameTh: 'ป้อมพระจุลจอมเกล้า', nameEn: 'Phra Chulachomklao Fort', category: 'history', amphoe: 'phra_samut_chedi', img: 'https://www.samutprakan.go.th/wp-content/uploads/2021/05/11_re-1.jpg', rating: 4.4, price: 0,
+                    descTh: 'ป้อมปืนสมัยรัชกาลที่ 5 สร้างเพื่อป้องกันประเทศจากภัยคุกคามทางทะเล เป็นสถานที่ทางประวัติศาสตร์ที่สำคัญยิ่ง',
+                    descEn: 'A Rama V-era fort built to defend the kingdom from sea threats. An important historical site in Thai history.'
+                },
+                {
+                    id: 10, nameTh: 'วัดบางพลีใหญ่ใน', nameEn: 'Wat Bang Phli Yai Nai', category: 'temple', amphoe: 'bang_phli', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Wat_Bang_Phli_Yai_Nai_01.jpg/800px-Wat_Bang_Phli_Yai_Nai_01.jpg', rating: 4.6, price: 0,
+                    descTh: 'วัดสำคัญประดิษฐานหลวงพ่อโต พระพุทธรูปปางมารวิชัยสมัยสุโขทัย ผู้คนนิยมมาขอพรเพื่อความเป็นสิริมงคล',
+                    descEn: 'An important temple housing Luang Pho To, a Sukhothai-era Buddha image. Popular for blessings and merit-making.'
+                },
+                {
+                    id: 11, nameTh: 'หอชมเมืองสมุทรปราการ', nameEn: 'Samut Prakan Observation Tower', category: 'art', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Samut_Prakan_Observation_Tower.jpg/800px-Samut_Prakan_Observation_Tower.jpg', rating: 4.5, price: 100,
+                    descTh: 'จุดชมวิว 360 องศาของจังหวัดสมุทรปราการ มองเห็นแม่น้ำเจ้าพระยาและเมืองโดยรอบ พร้อมนิทรรศการประวัติศาสตร์ท้องถิ่น',
+                    descEn: '360-degree observatory of Samut Prakan province, overlooking the Chao Phraya River and surrounding city with local history exhibits.'
+                },
+                {
+                    id: 12, nameTh: 'ตลาดคลองสวน 100 ปี', nameEn: 'Khlong Suan 100 Years Market', category: 'food', amphoe: 'bang_bo', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Khlong_Suan_Market.JPG/800px-Khlong_Suan_Market.JPG', rating: 4.4, price: 0,
+                    descTh: 'ตลาดเก่าแก่ริมคลองอายุกว่า 100 ปี รักษาวิถีชีวิตดั้งเดิมไว้ มีอาหารท้องถิ่นและขนมโบราณ ซึมซับบรรยากาศย้อนยุค',
+                    descEn: 'A century-old canal-side market preserving traditional lifestyle with local foods and vintage snacks. Perfect for cultural immersion.'
+                },
+                {
+                    id: 13, nameTh: 'วัดโปรดเกศเชษฐาราม', nameEn: 'Wat Protket Chettharam', category: 'temple', amphoe: 'phra_pradaeng', img: 'https://www.samutprakan.go.th/wp-content/uploads/2021/06/1_ree-2.jpg', rating: 4.3, price: 0,
+                    descTh: 'วัดเก่าแก่ในย่านพระประแดง มีสถาปัตยกรรมอันงดงาม เป็นวัดไทยพุทธเพียงวัดเดียวที่มีเอกลักษณ์เฉพาะตัวในย่านนี้',
+                    descEn: 'An ancient temple in Phra Pradaeng with beautiful architecture, the only Thai Buddhist temple with a unique style in this area.'
+                },
+                {
+                    id: 14, nameTh: 'สวนสุขภาพลัดโพธิ์', nameEn: 'Lat Pho Park', category: 'nature', amphoe: 'phra_pradaeng', img: 'https://palanla.com/ckeditor/upload/files/id37/domestic_location/Lat%20Pho%20Park/001.jpg', rating: 4.2, price: 0,
+                    descTh: 'สวนสาธารณะที่ร่มรื่น ริมแม่น้ำเจ้าพระยา มีเส้นทางวิ่งและปั่นจักรยาน เหมาะกับการออกกำลังกายและพักผ่อนหย่อนใจ',
+                    descEn: 'A lush public park along the Chao Phraya River with jogging and cycling paths, ideal for exercise and relaxation.'
+                },
+                {
+                    id: 15, nameTh: 'วัดกลางวรวิหาร', nameEn: 'Wat Klang Worawihan', category: 'temple', amphoe: 'mueang', img: 'https://upload.wikimedia.org/wikipedia/commons/2/22/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%A5%E0%B8%B2%E0%B8%87%E0%B8%A7%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3_%E0%B8%AD.%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87_%E0%B8%88.%E0%B8%AA%E0%B8%A1%E0%B8%B8%E0%B8%97%E0%B8%A3%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3_%2815%29.jpg', rating: 4.4, price: 0,
+                    descTh: 'วัดใจกลางเมืองสมุทรปราการ สร้างในสมัยอยุธยา ภายในมีพระอุโบสถเก่าแก่และพระพุทธรูปสำคัญ',
+                    descEn: 'A temple in the heart of Samut Prakan city, built during the Ayutthaya period with an ancient ordination hall.'
+                },
+                {
+                    id: 16, nameTh: 'พิพิธภัณฑ์ทหารเรือ', nameEn: 'Royal Thai Navy Museum', category: 'history', amphoe: 'mueang', img: 'https://www.navy.mi.th/storage/frontend/editor/1bdfe2cc-54a1-4a1c-bf2a-ef8b78db2ea7.jfif', rating: 4.2, price: 0,
+                    descTh: 'จัดแสดงอาวุธ ยุทโธปกรณ์ และประวัติศาสตร์ราชนาวีไทย ตั้งอยู่ในบริเวณโรงเรียนนายเรือ',
+                    descEn: 'Displays weapons, equipment, and the history of the Royal Thai Navy, located within the Naval Academy.'
+                },
+                {
+                    id: 17, nameTh: 'ป้อมผีเสื้อสมุทร', nameEn: 'Phi Suea Samut Fort', category: 'history', amphoe: 'phra_samut_chedi', img: 'https://cms.dmpcdn.com/travel/2021/05/19/44e480e0-b85c-11eb-9ca2-73594b023eb0_original.jpg', rating: 4.3, price: 0,
+                    descTh: 'ป้อมบนเกาะกลางแม่น้ำเจ้าพระยา มีรูปทรงคล้ายผีเสื้อกางปีก สร้างเพื่อป้องกันประเทศ ปัจจุบันเป็นพิพิธภัณฑ์',
+                    descEn: 'A butterfly-shaped fort on an island in the Chao Phraya River, built for national defense, now a museum.'
+                },
+                {
+                    id: 18, nameTh: 'วัดบางพลีใหญ่กลาง', nameEn: 'Wat Bang Phli Yai Klang', category: 'temple', amphoe: 'bang_phli', img: 'https://cms.dmpcdn.com/ugcarticle/2024/07/04/23ab7ea0-3960-11ef-9aad-89e9aa31b573_webp_original.webp', rating: 4.5, price: 0,
+                    descTh: 'หรือ "วัดพระนอน" ประดิษฐานพระปางไสยาสน์องค์ใหญ่ที่สุดในประเทศไทย สร้างความประทับใจแต่แรกเห็น',
+                    descEn: 'Also known as "Sleeping Buddha Temple", housing the largest reclining Buddha in Thailand. Impressive from first sight.'
+                },
+                {
+                    id: 19, nameTh: 'สวนศรีนครเขื่อนขันธ์', nameEn: 'Sri Nakhon Khuean Khan Park', category: 'nature', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Sri_Nakhon_Khuean_Khan_Park_09.JPG/1024px-Sri_Nakhon_Khuean_Khan_Park_09.JPG', rating: 4.6, price: 0,
+                    descTh: 'สวนสาธารณะขนาดใหญ่ในคุ้งบางกะเจ้า มีเส้นทางเดิน ปั่นจักรยาน และจุดชมนก เหมาะกับครอบครัวและท่องเที่ยวเชิงอนุรักษ์',
+                    descEn: 'A large public park in Bang Kra Jao with walking trails, cycling paths, and birdwatching spots. Perfect for eco-tourism.'
+                },
+                {
+                    id: 20, nameTh: 'วัดไพชยนต์พลเสพย์ราชวรวิหาร', nameEn: 'Wat Phaichiyon Phonlasep', category: 'temple', amphoe: 'phra_pradaeng', img: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%AD%E0%B8%B8%E0%B9%82%E0%B8%9A%E0%B8%AA%E0%B8%96%E0%B9%81%E0%B8%A5%E0%B8%B0%E0%B8%9E%E0%B8%A3%E0%B8%B0%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B9%84%E0%B8%9E%E0%B8%8A%E0%B8%A2%E0%B8%99%E0%B8%95%E0%B9%8C%E0%B8%9E%E0%B8%A5%E0%B9%80%E0%B8%AA%E0%B8%9E%E0%B8%A2%E0%B9%8C%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A7%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%AB%E0%B8%B2%E0%B8%A3.jpg', rating: 4.3, price: 0,
+                    descTh: 'วัดเก่าแก่ในพระประแดง มีโบสถ์และวิหารอันงดงามสะท้อนศิลปะไทยโบราณ สงบร่มรื่นเหมาะแก่การสักการะ',
+                    descEn: 'An ancient temple in Phra Pradaeng with beautiful chapel and halls reflecting traditional Thai art, serene and peaceful.'
+                }
+            ];
+            localStorage.setItem('travelPlaces', JSON.stringify(initialPlaces));
+            localStorage.setItem('travelPlacesVersion', PLACES_VERSION.toString());
+        }
 
-    // 2. Initial Users
-    if (!localStorage.getItem('travelUsers')) {
-        const initialUsers = [
-            { id: 1, name: 'Admin System', email: 'admin@samutprakan.com', password: 'admin', role: 'admin', date: '01/03/2026' },
-            { id: 2, name: 'Somchai Jaidee', email: 'somchai@email.com', password: 'password', role: 'user', date: '05/03/2026' }
-        ];
-        localStorage.setItem('travelUsers', JSON.stringify(initialUsers));
-    }
+        // 2. Initial Users
+        if (!localStorage.getItem('travelUsers')) {
+            const initialUsers = [
+                { id: 1, name: 'Admin System', email: 'admin@samutprakan.com', password: 'admin', role: 'admin', date: '01/03/2026' },
+                { id: 2, name: 'Somchai Jaidee', email: 'somchai@email.com', password: 'password', role: 'user', date: '05/03/2026' }
+            ];
+            localStorage.setItem('travelUsers', JSON.stringify(initialUsers));
+        }
 
-    // 3. Initial Pending Reviews Data (for admin)
-    if (!localStorage.getItem('adminPendingReviews')) {
-        const initialPending = [
-            { id: 101, place: 'สถานตากอากาศบางปู', user: 'Jane Doe', rating: 5, comment: 'นกเยอะมากกก ข้าวเกรียบอร่อย', date: '10/03/2026' },
-            { id: 102, place: 'วัดอโศการาม', user: 'Sommai', rating: 4, comment: 'สงบเงียบ เหมาะแก่การปฏิบัติธรรม', date: '09/03/2026' }
-        ];
-        localStorage.setItem('adminPendingReviews', JSON.stringify(initialPending));
-    }
-};
+        // 3. Initial Pending Reviews Data (for admin)
+        if (!localStorage.getItem('adminPendingReviews')) {
+            const initialPending = [
+                { id: 101, place: 'สถานตากอากาศบางปู', user: 'Jane Doe', rating: 5, comment: 'นกเยอะมากกก ข้าวเกรียบอร่อย', date: '10/03/2026' },
+                { id: 102, place: 'วัดอโศการาม', user: 'Sommai', rating: 4, comment: 'สงบเงียบ เหมาะแก่การปฏิบัติธรรม', date: '09/03/2026' }
+            ];
+            localStorage.setItem('adminPendingReviews', JSON.stringify(initialPending));
+        }
+    };
 
-_oldInitDb();
+    _oldInitDb();
 } // ------- END DISABLED old mock data -------
 
 /* === Demo Quick Login (uses real API) === */
@@ -652,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!currentProfileData) {
                 try {
                     currentProfileData = await ProfileAPI.get();
-                } catch(err) { return; }
+                } catch (err) { return; }
             }
             document.getElementById('editNameInput').value = currentProfileData.fullName || '';
 
@@ -714,7 +722,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const lang = localStorage.getItem('appLang') || 'th';
                 alert(lang === 'en' ? 'Profile updated!' : 'อัปเดตโปรไฟล์เรียบร้อย!');
-            } catch(err) {
+            } catch (err) {
                 alert(err.message || 'Error updating profile');
             } finally {
                 if (btn) btn.disabled = false;
@@ -836,7 +844,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('editPlaceCategory').value = place.category || 'nature';
                 document.getElementById('editPlaceAmphoe').value = place.amphoe || 'mueang';
                 document.getElementById('editPlaceDesc').value = place.descriptionTh || '';
-                
+
                 document.getElementById('editModal').classList.add('show-modal');
             } catch (err) {
                 alert(err.message || 'Error loading place data');
@@ -849,15 +857,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const inputs = addPlaceForm.querySelectorAll('input, select, textarea');
                 const name = inputs[0].value;
-                const catElement = inputs[1]; // select
+                const catElement = document.getElementById('addPlaceCategory') || inputs[1]; // select
                 const category = catElement.value || 'nature';
-                const amphoeElement = inputs[2]; // select
+                const amphoeElement = document.getElementById('addPlaceAmphoe') || inputs[2]; // select
                 const amphoe = amphoeElement ? amphoeElement.value || 'mueang' : 'mueang';
-                const description = inputs[3] ? inputs[3].value : '';
-                
+                const descElement = document.getElementById('addPlaceDesc') || inputs[3];
+                const description = descElement ? descElement.value : '';
+
                 const fileInput = document.getElementById('adminPlaceImageFile');
                 let imageUrl = '';
-                
+
                 const btn = addPlaceForm.querySelector('button[type="submit"]');
                 if (btn) btn.disabled = true;
 
@@ -907,10 +916,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const category = document.getElementById('editPlaceCategory').value;
                 const amphoe = document.getElementById('editPlaceAmphoe').value;
                 const description = document.getElementById('editPlaceDesc').value;
-                
+
                 const fileInput = document.getElementById('editPlaceImageFile');
                 let imageUrl = undefined; // undefined means don't update image
-                
+
                 const btn = editPlaceForm.querySelector('button[type="submit"]');
                 if (btn) btn.disabled = true;
 
@@ -941,7 +950,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     await PlacesAPI.update(id, updateData);
-                    
+
                     const modal = document.getElementById('editModal');
                     if (modal) modal.classList.remove('show-modal');
                     alert('แก้ไขสถานที่สำเร็จ / Place updated successfully');
@@ -1021,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('editUserEmail').value = user.email || '';
                 document.getElementById('editUserRole').value = user.role || 'user';
                 document.getElementById('editUserIsActive').value = user.isActive === false ? 'false' : 'true';
-                
+
                 document.getElementById('editUserModal').classList.add('show-modal');
             } catch (err) {
                 alert(err.message || 'Error loading user data');
@@ -1036,13 +1045,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fullName = document.getElementById('editUserFullName').value;
                 const role = document.getElementById('editUserRole').value;
                 const isActive = document.getElementById('editUserIsActive').value === 'true';
-                
+
                 const btn = editUserForm.querySelector('button[type="submit"]');
                 if (btn) btn.disabled = true;
 
                 try {
                     await UsersAPI.update(id, { fullName, role, isActive });
-                    
+
                     const modal = document.getElementById('editUserModal');
                     if (modal) modal.classList.remove('show-modal');
                     alert('อัปเดตผู้ใช้งานสำเร็จ / User updated successfully');
@@ -1304,7 +1313,7 @@ function fixPlaceImage(place) {
 }
 
 /** Global image error handler — tries PLACE_IMAGES fallback when DB image fails */
-window.handleImgError = function(img) {
+window.handleImgError = function (img) {
     const slug = img.getAttribute('data-slug');
     const fallback = slug ? PLACE_IMAGES[slug] : null;
     // Already tried fallback? Use gradient placeholder

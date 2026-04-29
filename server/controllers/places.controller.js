@@ -52,6 +52,8 @@ async function getPlaces(req, res) {
           category: p.category,
           amphoe: p.amphoe,
           price: p.price,
+          descriptionTh: p.descriptionTh,
+          descriptionEn: p.descriptionEn,
           viewCount: p.viewCount,
           img: p.images[0]?.imageUrl || null,
           rating: agg._avg.rating ? parseFloat(agg._avg.rating.toFixed(1)) : 0,

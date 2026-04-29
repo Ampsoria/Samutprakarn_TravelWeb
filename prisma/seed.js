@@ -32,6 +32,7 @@ async function main() {
     { slug: 'phra_pradaeng', nameTh: 'พระประแดง', nameEn: 'Phra Pradaeng', sortOrder: 3 },
     { slug: 'phra_samut_chedi', nameTh: 'พระสมุทรเจดีย์', nameEn: 'Phra Samut Chedi', sortOrder: 4 },
     { slug: 'bang_bo', nameTh: 'บางบ่อ', nameEn: 'Bang Bo', sortOrder: 5 },
+    { slug: 'bang_sao_thong', nameTh: 'บางเสาธง', nameEn: 'Bang Sao Thong', sortOrder: 6 },
   ];
 
   for (const amp of amphoes) {

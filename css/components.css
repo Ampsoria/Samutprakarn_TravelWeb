@@ -555,8 +555,8 @@
 .place-actions { display: flex; gap: 8px; }
 
 /* === Modal/Dialog === */
-.modal-overlay, .show-modal {
-    display: flex;
+.modal-overlay {
+    display: none;
     position: fixed;
     inset: 0;
     z-index: 200;
@@ -565,4 +565,19 @@
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.show-modal {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 600px;
+    padding: var(--spacing-4);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
 }
